@@ -6,8 +6,6 @@ services:
     build: ./nginx
     ports:
       - "80:80"
-  expressjs:
-    build: ./server
   postgres:
     image: postgres:14.7
     environment:
@@ -16,3 +14,5 @@ services:
       POSTGRES_PASSWORD: "1234"
     ports:
       - "5432:5432"
+  expressjs:
+    build: ./server
