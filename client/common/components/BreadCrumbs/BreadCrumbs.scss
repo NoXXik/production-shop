@@ -1,0 +1,23 @@
+.breadcrumbs {
+
+}
+.breadrumbs {
+
+		// .breadrumbs__list
+
+		&__list {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+		}
+
+		// .breadrumbs__item
+
+		&__item {
+		}
+        .breadrumbs__item::before {
+            transform: rotate(-45deg);
+        }
+
+
+}

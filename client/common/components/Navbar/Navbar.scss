@@ -1,0 +1,406 @@
+/*
+*<header class="header">
+*<div class="header__wrapper">
+*	<div class="header__container _container">
+*		<div class="header__body">
+*			<div class="header__top">
+*				<a class="header__logo" href="/">E-commerce</a>
+*				<div class="header__menu menu">
+*					<nav class="menu__body">
+*					<ul class="menu__list">
+*						<li class="menu__item"><a class="menu__link" href="/about">О бренде</a><button type="button" class="menu__arrow _icon-arrow-down"></button>
+*						<ul class="menu__sub-list">
+*							<li class="menu__sub-item"><a class="menu__sub-link" href="/about/news">Новости</a></li>
+*						</ul>
+*						</li>
+*						<li class="menu__item"><a class="menu__link" href="/support">Тех.поддержка</a><button type="button" class="menu__arrow _icon-arrow-down"></button>
+*						<ul class="menu__sub-list">
+*							<li class="menu__sub-item"><a class="menu__sub-link" href="/support/order">Вопросы в тех.поддержку</a></li>
+*							<li class="menu__sub-item"><a class="menu__sub-link" href="/support/faq">Частые вопросы</a></li>
+*							<li class="menu__sub-item"><a class="menu__sub-link" href="/support/contacts">Контакты</a></li>
+*							<li class="menu__sub-item"><a class="menu__sub-link" href="/support/reset-password">Сброс пороля</a></li>
+*						</ul>
+*						</li>
+*						<li class="menu__item"><a class="menu__link" href="/service">Сервис</a><button type="button" class="menu__arrow _icon-arrow-down"></button>
+*						<ul class="menu__sub-list">
+*							<li class="menu__sub-item"><a class="menu__sub-link" href="/service">Сервисное обслуживание</a></li>
+*							<li class="menu__sub-item"><a class="menu__sub-link" href="/service/status">Проверка статуса ремонта</a></li>
+*							<li class="menu__sub-item"><a class="menu__sub-link" href="/service/guaranty">Гарантия</a></li>
+*							<li class="menu__sub-item"><a class="menu__sub-link" href="/service/contacts">Контакты</a></li>
+*						</ul>
+*						</li>
+*						<li class="menu__item"><a class="menu__link" href="/download">Скачать</a><button type="button" class="menu__arrow _icon-arrow-down"></button>
+*						<ul class="menu__sub-list">
+*							<li class="menu__sub-item"><a class="menu__sub-link" href="/download/software">Прошивки и ПО</a></li>
+*							<li class="menu__sub-item"><a class="menu__sub-link" href="/download/documents">Документация</a></li>
+*						</ul>
+*						</li>
+*					</ul>
+*					</nav>
+*				</div>
+*			</div>
+*			<div class="header__bottom">
+*				<div class="header__catalog-block">
+*					<div class="header__catalog catalog-header">
+*						<a class="catalog-header__link" href="/catalog">Каталог товаров</a>
+*					</div>
+*					<ul class="header__catalog-list catalog">
+*						<li class="catalog__item"><a class="catalog__item-link" href="/">Видеонаблюдение</a>
+*						<ul class="catalog__sub-list">
+*							<li class="catalog__sub-item"><a class="catalog__sub-item-link" href="/">IP Видеонаблюдение</a></li>
+*						</ul>
+*						</li>
+*					</ul>
+*				</div>
+*				<div class="header__search">
+*					<div class="search__form">
+*						<button type="button" class="search-form__icon _icon-search"></button>
+*						<form action="#" class="search-form__item">
+*							<button type="button" class="search-form__btn _icon-search"></button><input type="text" class="search__form-input">
+*						</form>
+*					</div>
+*				</div>
+*				<div class="header__actions actions-header">
+*					<div class="actions-header__buttons">
+*						<div class="actions-header__buttons actions-header__buttons_home">
+*							<a class="header-link" href="/">Главная</a>
+*						</div>
+*						<div class="actions-header__buttons actions-header__buttons_home">
+*							<a class="header-link" href="/">Каталог</a>
+*						</div>
+*						<div class="actions-header__buttons actions-header__buttons_home">
+*							<a class="header-link" href="/">Сравнить</a>
+*						</div>
+*						<div class="actions-header__buttons actions-header__buttons_home">
+*							<a class="header-link" href="/">Избранное</a>
+*						</div>
+*						<div class="actions-header__buttons actions-header__buttons_home">
+*							<a class="header-link" href="/">Корзина</a>
+*						</div>
+*						<div class="actions-header__buttons actions-header__buttons_home">
+*							<a class="header-link" href="/">Войти</a>
+*						</div>
+*					</div>
+*				</div>
+*			</div>
+*		</div>
+*	</div>
+*</div>
+*</header>
+*/
+
+
+.header {
+//  position: fixed;
+//  z-index: 50;
+  margin-bottom: 30px;
+
+  &__wrapper {
+    display: block;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 2px 0px;
+    .header__container {
+      //border-radius: 8px;
+      .header__body {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+
+      }
+
+      .header__top {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 40px;
+        margin-bottom: 15px;
+
+        .header__logo {
+          &:hover {
+          }
+
+          &:active {
+          }
+
+          &:focus {
+          }
+        }
+
+        .menu {
+          &__body {
+          }
+
+          .menu__list {
+            display: flex;
+            flex-direction: row;
+
+            .menu__item {
+              position: relative;
+
+              &:hover {
+                .menu__sub-list {
+                  visibility: visible;
+                  opacity: 1;
+                }
+
+                .menu__arrow {
+                  transform: rotate(-180deg);
+                  color: $orange;
+                }
+              }
+
+              &:not(:last-child) {
+                margin: 0 15px 0 0;
+              }
+            }
+
+            .menu__link {
+              &:hover {
+              }
+
+              &:active {
+              }
+
+              &:focus {
+              }
+            }
+
+            .menu__arrow {
+              border: none;
+              background: none;
+              font-size: 8px;
+              color: $gray;
+              transition: all 300ms ease;
+
+              &:hover {
+              }
+
+              &:active {
+              }
+
+              &:focus {
+              }
+            }
+
+            .menu__sub-list {
+              visibility: hidden;
+              z-index: 5;
+              position: absolute;
+              left: 0;
+              top: calc(100% + .05rem);
+              background-color: white;
+              padding: .75rem;
+              border-radius: .25rem;
+              box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .1);
+              opacity: 0;
+
+              .menu__sub-item {
+                &:not(:last-child) {
+                  margin: 0 0 10px 0;
+                }
+              }
+
+              .menu__sub-link {
+                &:hover {
+                }
+
+                &:active {
+                }
+
+                &:focus {
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .header__bottom {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        .header__catalog-block {
+        }
+
+        .header__search {
+        }
+
+        .actions-header {
+          &__buttons {
+          }
+
+          .actions-header__buttons {
+            display: flex;
+            flex-direction: row;
+
+            &:not(:last-child) {
+              margin: 0 26px 0 0;
+            }
+
+            .header-link {
+              &:hover {
+              }
+
+              &:active {
+              }
+
+              &:focus {
+              }
+            }
+
+            .header-link span {
+              font-size: 20px;
+            }
+
+            .header-link span::before {
+              transform: translateX(30%);
+            }
+          }
+        }
+
+        .catalog-header {
+          list-style: none;
+
+          &__link {
+            &:hover {
+            }
+
+            &:active {
+            }
+
+            &:focus {
+            }
+          }
+        }
+
+        .catalog {
+          &__item {
+          }
+
+          .catalog__item-link {
+            &:hover {
+            }
+
+            &:active {
+            }
+
+            &:focus {
+            }
+          }
+
+          .catalog__sub-list {
+            .catalog__sub-item {
+            }
+
+            .catalog__sub-item-link {
+              &:hover {
+              }
+
+              &:active {
+              }
+
+              &:focus {
+              }
+            }
+          }
+        }
+
+        .search__form {
+          min-width: 400px;
+
+          .search-form__icon {
+            visibility: hidden;
+            @media (max-width: $md3) {
+              visibility: visible;
+            }
+
+            &:hover {
+            }
+
+            &:active {
+            }
+
+            &:focus {
+            }
+          }
+
+          .search-form__item {
+
+          }
+
+          // search-form__btn
+          .search-form__btn {
+            border: none;
+            background-color: white;
+            font-size: 18px;
+            color: #b3b3b7;
+
+            &:hover {
+            }
+
+            &:active {
+            }
+
+            &:focus {
+            }
+          }
+
+          .search__form-input {
+            width: 90%;
+            font-size: 16px;
+            border: none;
+            outline: none;
+            border-bottom: 1px solid #b3b3b7;
+          }
+
+          .search__form-input::placeholder {
+            color: $gray;
+
+          }
+
+          .search__form-input:focus {
+            border-color: $orange;
+
+            .search-form__btn:before {
+              color: $orange;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.submenu {
+  position: absolute;
+  z-index: 5;
+  min-width: 200px;
+  background: white;
+  border: none;
+  visibility: hidden;
+  opacity: 0;
+  background-color: white;
+  padding: .75rem .75rem .75rem .75rem;
+  border-radius: .25rem;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .1);
+}
+
+.submenu li {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.submenu .submenu {
+  position: absolute;
+  left: 100%;
+  top: 0px;
+
+}
+
+.header__catalog-block li:hover > .submenu {
+  opacity: 1;
+  visibility: visible;
+}

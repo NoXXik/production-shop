@@ -1,0 +1,42 @@
+// <label htmlFor="" className="filter-label">
+//     <span className="filter-chekbox">
+//          <input type="checkbox" className="filter-checkbox__input _form-checkbox" />
+//          <span className="filter-chekbox__chek-mark _chek-mark"></span>
+//     </span>
+//     <span className="filter-title">Параметра фильтра 2</span>
+//     <span className="filter-count">(4)</span>
+// </label>
+
+._form-checkbox {
+    display: none;
+}
+
+._chek-mark {
+    display: inline-block;
+    font-size: 12px;
+    width: 12px;
+    height: 12px;
+    border: 1px solid $gray;
+    border-radius: 4px;
+    padding: 1px;
+    &::before {
+        opacity: 0;
+        color:white
+    }
+}
+
+._form-checkbox:checked + ._chek-mark {
+    background-color: $orange;
+    border-color: $orange;
+    &::before {
+        opacity: 1;
+    }
+}
+
+.filter-label:hover {
+    cursor: pointer;
+    color: $gray;
+}
+
+
+

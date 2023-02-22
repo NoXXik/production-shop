@@ -1,0 +1,16 @@
+version: '3'
+services:
+  nextjs:
+    build: ./
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+  postgres:
+    image: postgres:15.2
+    environment:
+      POSTGRES_DB: "production"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "1234"
+    ports:
+      - "5432:5432"

@@ -1,0 +1,136 @@
+
+
+// Orange button
+._button-orange {
+    max-width: 300px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid $orange;
+    border-radius: 8px;
+    background-color: white;
+    transition: all 150ms ease;
+    color: $gray;
+    font-size: 22px;
+}
+._button-orange > a {
+    color: $orange;
+}
+
+._button-orange:hover {
+    background-color: $orange;
+    color: white;
+    .catalog-header__link {
+        color: white;
+    }
+}
+
+._button-gray {
+    max-width: 300px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    color: $gray;
+    border: 1px solid #dfdfe1;
+    border-radius: 8px;
+    background-color: inherit;
+    transition: all 150ms ease;
+    font-size: 22px;
+}
+._button-gray > a {
+    color: $gray;
+}
+
+._button-gray:hover {
+    background-image: linear-gradient(0deg,#fc8507,#ffa218);
+    border-color: #fc8507 transparent #ffa218;
+    color: white;
+    cursor: pointer;
+    .catalog-header__link {
+        color: white;
+    }
+}
+
+._logo {
+    text-decoration: none;
+    font-size: 24px;
+    font-family: $fontFamily;
+    color: $orange;
+}
+
+._logo:hover {
+    cursor: pointer;
+}
+
+
+._text-basic {
+    font-family: $fontFamily;
+    font-size: $fontSize;
+    color: black;
+}
+
+._header-level-4 {
+    font-size: 24px;
+    font-weight: 300;
+    color: black;
+    font-family: $fontFamily;
+}
+
+._alert-dangerous {
+    color: #ee0000;
+}
+
+._link-another-page {
+    color: #2374a5;
+}
+
+._sidebar-container {
+    max-width: 270px;
+}
+
+.ui__arrow {
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 10px;
+    border: none;
+    background-color: white;
+    font-size: 8px;
+    color: $gray;
+    transition: all 300ms ease;
+    &._active::before {
+        transform: rotate(-180deg);
+        color: white;
+
+    }
+    &._active {
+        background-color: $orange;
+        color: $gray;
+
+    }
+}
+
+
+
+._link-sidebar {
+    font-family: $fontFamily;
+    font-size: 16px;
+    color: $gray;
+    text-decoration: none;
+    // &._active {
+    //     color: $orange;
+    // }
+    &._active{
+        color: white;
+    }
+}
+
+._link-sidebar:hover {
+    color: $orange;
+    cursor: pointer;
+    &._active {
+        color: white;
+    }
+}

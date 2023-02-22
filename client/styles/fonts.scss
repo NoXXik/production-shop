@@ -1,0 +1,14 @@
+// @include font("Gilroy", "Gilroy-Bold", "700", "normal");
+// @include font("Gilroy", "Gilroy-Medium", "500", "normal");
+// @include font("Gilroy", "Gilroy-SemiBold", "600", "normal");
+// @include font("Gilroy", "Gilroy-Regular", "400", "normal");
+// @include font("icons", "icons", "400", "normal");
+
+@font-face {
+	font-family: 'Gilroy';
+	font-style: normal;
+	font-weight: 700;
+	src: local('Gilroy'),
+		url('./fonts/Gilroy-Bold.ttf') format('ttf'),
+}
+
