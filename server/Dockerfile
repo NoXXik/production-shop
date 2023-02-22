@@ -1,19 +1,19 @@
 FROM node:18-alpine AS base
+ARG APP_DIR=app
+RUN mkdir -p ${APP_DIR}
+WORKDIR ${APP_DIR}
 
-# Create app directory
-WORKDIR /usr/src/app
-USER expressjs
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
+# Установка зависимостей
 COPY package*.json ./
+RUN npm install --production
+# Для использования в продакшне
+# RUN npm install --production
 
-RUN npm install
-# If you are building your code for production
-# RUN npm ci --only=production
-
-# Bundle app source
+# Копирование файлов проекта
 COPY . .
 
+# Уведомление о порте, который будет прослушивать работающее приложение
 EXPOSE 5000
-CMD [ "node", "index.js" ]
+
+# Запуск проекта
+CMD ["node", "index.js"]
