@@ -1,11 +1,13 @@
 version: '3'
 services:
   nextjs:
-    build: ./
+    build: ./client
   nginx:
     build: ./nginx
     ports:
-      - 80:80
+      - "80:80"
+  expressjs:
+    build: ./server
   postgres:
     image: postgres:14.7
     environment:
