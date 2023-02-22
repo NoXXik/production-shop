@@ -15,4 +15,6 @@ services:
     ports:
       - "5432:5432"
   expressjs:
+    depends_on:
+      - postgres
     build: ./server
