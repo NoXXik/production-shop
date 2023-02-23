@@ -7,6 +7,7 @@ services:
     ports:
       - "80:80"
   postgres:
+    container_name: pg_db
     image: postgres:15.2-alpine
     environment:
       POSTGRES_DB: "production"
@@ -18,3 +19,11 @@ services:
     depends_on:
       - postgres
     build: ./server
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ildar@mail.ru
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
