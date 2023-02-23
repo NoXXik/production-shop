@@ -5,7 +5,7 @@ import { IFilter, IReadyFilter } from '../../types/filterTypes'
 
 export const categoryAPI = createApi({
     reducerPath: 'categoryAPI',
-    baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:5000/api'}),
+    baseQuery: fetchBaseQuery({baseUrl: `http://${process.env.API_HOST}:${process.env.API_PORT}/api`}),
     endpoints: builder => ({
         getProducts: builder.mutation<IProducts, any>({
             query: (data) => ({

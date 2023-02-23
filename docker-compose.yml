@@ -17,6 +17,7 @@ services:
     ports:
       - "5432:5432"
   expressjs:
+    container_name: express-api
     restart: always
     depends_on:
       - postgres

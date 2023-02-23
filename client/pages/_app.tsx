@@ -27,7 +27,7 @@ export default function MyApp({ Component, pageProps, navbarCategories, router }
         <MainLayout navbarCategories={navbarCategories} router={router}>
           <Component {...pageProps}/>
         </MainLayout>
-    </ConfigProvider>   
+    </ConfigProvider>
     </Provider>
   );
 }
@@ -36,9 +36,9 @@ MyApp.getInitialProps = async(context: AppContext) => {
   if(!context.ctx.req) {
     return {navbarCategories: null, router: context.router}
   }
-  
+
   const pageProps = await App.getInitialProps(context); // Retrieves page's `getInitialProps`
-  const navbarCategories = (await (await axios.get(`http://localhost:5000/api/category`)).data) as INavbarCategory[];
+  const navbarCategories = (await (await axios.get(`http://${process.env.API_HOST}:${process.env.API_PORT}/api/category`)).data) as INavbarCategory[];
   return {...pageProps, navbarCategories, router: context.router}
 }
 
