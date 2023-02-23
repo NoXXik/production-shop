@@ -1,6 +1,7 @@
 version: '3'
 services:
   nextjs:
+    container_name: nextjs
     build: ./client
   nginx:
     build: ./nginx
@@ -10,12 +11,13 @@ services:
     container_name: pg_db
     image: postgres:15.2-alpine
     environment:
-      POSTGRES_DB: "production"
-      POSTGRES_USER: "root"
-      POSTGRES_PASSWORD: "1234"
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
   expressjs:
+    restart: always
     depends_on:
       - postgres
     build: ./server
