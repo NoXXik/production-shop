@@ -16,6 +16,8 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
+    volumes:
+      - /private/var/lib/postgresql:/var/lib/postgresql
   expressjs:
     container_name: express-api
     restart: always
