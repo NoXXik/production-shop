@@ -6,7 +6,7 @@ class fileController {
         try {
             const file = req.files.file
             const name = req.body.name
-            let path = `/Users/admin/WebstormProjects/internet-shop/server/static/productImages/${name}`
+            let path = path(__dirname, '..', 'static', 'productImages', name)
             if (fs.existsSync(path)) {
                 return res.status(400).json({message: 'File already exist'})
             }
@@ -26,7 +26,7 @@ class fileController {
             const name = req.body.name
             console.log(req)
 
-            let path = `/Users/admin/WebstormProjects/internet-shop/server/static/productFiles/${name}`
+            let path = path(__dirname, '..', 'static', 'productFiles', name)
             if (fs.existsSync(path)) {
                 return res.status(400).json({message: 'File already exist'})
             }
