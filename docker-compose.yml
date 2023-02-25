@@ -3,12 +3,17 @@ services:
   nextjs:
     container_name: nextjs
     build: ./client
+    environment:
+      API_HOST: ${API_HOST}
+      API_PORT: ${API_PORT}
+      MAIN_PORT: ${MAIN_PORT}
   nginx:
     build: ./nginx
     ports:
       - "80:80"
   postgres:
     container_name: pg_db
+    restart: always
     image: postgres:15.2-alpine
     environment:
       POSTGRES_DB: ${DB_NAME}
@@ -34,4 +39,4 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
       - "5050:80"
-#
+
