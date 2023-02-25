@@ -4,30 +4,7 @@ import { INavbarCategory } from "../../types/categoryTypes";
 import Link from "next/link";
 
 
-const pages = {
-    index: {
-        title: 'Главная',
-        level: 0,
-        url: '/',
-        childrens: {
-            about: {
-                title: 'О нас',
-                level: 1,
-                url: '/about',
-                childrens: {
-                    news: {
-                        title: 'Новости',
-                        level: 2,
-                        url: '/about/news',
-                        childrens: null
-                    }
-                }
-            }
-
-        }
-    }
-}
-const pages2 = [
+const pages = [
     {page: 'index', title: 'Главная', url: '/', level: 0, childrens: ['about', 'catalog-v2']},
 
         {page: 'about', title: 'О нас', url: '/about', level: 1, childrens: ['news']},
@@ -35,6 +12,27 @@ const pages2 = [
 
         {page: 'catalog', title: 'Каталог', url: '/catalog', level: 1, childrens: ['[category]']},
             {page: '[category]', title: '[category]', url: '/catalog/[category]', level: 2, childrens: null},
+
+        {page: 'download', title: 'Скачать', url: '/download', level: 1, childrens: ['documents', 'software']},
+            {page: 'documents', title: 'Скачать документы', url: '/download/documents', level: 2, childrens: null},
+            {page: 'software', title: 'Скачать ПО', url: '/download/software', level: 2, childrens: null},
+
+        {page: 'service', title: 'Сервисное обслуживание', url: '/service', level: 1, childrens: ['contacts', 'guaranty', 'status']},
+            {page: 'contacts', title: 'Контакты', url: '/service/contacts', level: 2, childrens: null},
+            {page: 'guaranty', title: 'Гарантии', url: '/service/guaranty', level: 2, childrens: null},
+            {page: 'status', title: 'Статус ремонта', url: '/service/status', level: 2, childrens: null},
+
+        {page: 'support', title: 'Поддержка', url: '/support', level: 1, childrens: ['contacts', 'faq', 'order', 'reset-password']},
+            {page: 'contacts', title: 'Контакты', url: '/support/contacts', level: 2, childrens: null},
+            {page: 'faq', title: 'Частые вопросы', url: '/support/faq', level: 2, childrens: null},
+            {page: 'order', title: 'Вопросы в тех.поддержку', url: '/support/order', level: 2, childrens: null},
+            {page: 'reset-password', title: 'Сброс пороля', url: '/support/reset-password', level: 2, childrens: null},
+
+        {page: 'cart', title: 'Корзина', url: '/cart', level: 1, childrens: null},
+        {page: 'compare', title: 'Сброс пороля', url: '/compare', level: 1, childrens: null},
+        {page: 'favorite', title: 'Сброс пороля', url: '/favorite', level: 1, childrens: null},
+        {page: 'login', title: 'Сброс пороля', url: '/login', level: 1, childrens: null},
+        {page: 'signin', title: 'Сброс пороля', url: '/signin', level: 1, childrens: null},
 
 ]
 
@@ -48,11 +46,11 @@ export default function BreadCrumbs({router, navbarCategories}: {router: Router,
         let crumbsArray: {title: string, url: string}[] = []
         const path = router.asPath
         const pathArray = path.split('/')
-        let pageInfo = pages2.filter(page => page.page === 'index')[0]
+        let pageInfo = pages.filter(page => page.page === 'index')[0]
         crumbsArray.push({title: pageInfo.title, url: pageInfo.url})
         console.log('pathname', router.pathname)
         if(router.pathname.includes('/catalog/[category]')){
-            pageInfo = pages2.filter(page => page.page === 'catalog')[0]
+            pageInfo = pages.filter(page => page.page === 'catalog')[0]
             crumbsArray.push({title: pageInfo.title, url: pageInfo.url})
             const categotyTitle = pathArray[2].split('?')[0]
             const category = navbarCategories?.filter(cat => cat.translit === categotyTitle)[0]
@@ -67,7 +65,7 @@ export default function BreadCrumbs({router, navbarCategories}: {router: Router,
             console.log(pathArray, path)
             pathArray.forEach((path, id) => {
                 if(id > 0) {
-                    pageInfo = pages2.filter(page => page.page === path)[0]
+                    pageInfo = pages.filter(page => page.page === path)[0]
                     crumbsArray.push({title: pageInfo.title, url: pageInfo.url})
                 }
             })
@@ -79,7 +77,7 @@ export default function BreadCrumbs({router, navbarCategories}: {router: Router,
         crumbsArray = parseRouter()
     }
     useEffect(() => {
-        setCrumbs(parseRouter()) 
+        setCrumbs(parseRouter())
     }, [])
     useEffect(() => {
         setCrumbs(parseRouter())
