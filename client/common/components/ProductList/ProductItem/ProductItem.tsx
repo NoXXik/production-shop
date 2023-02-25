@@ -25,7 +25,7 @@ export default function ProductItem(props: { product: IProduct }) {
             <li className="product-item product-wrapper">
                 <div className="product__image">
                     <a className="product__image-link">
-                        <Image src={`http://${process.env.NEXT_PUBLIC_MAIN_PORT}:${process.env.NEXT_PUBLIC_API_PORT}/productImages/${images[0]}`} fill
+                        <Image src={`http://45.146.164.174:5000/productImages/${images[0]}`} fill
                                alt="" className="product__image-img"/>
                     </a>
                     <div className="product__image-labels">
