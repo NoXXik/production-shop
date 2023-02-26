@@ -14,6 +14,15 @@ export default function About() {
                 <div className="product__image-labels">
                 </div>
             </div>
+            <div className="product__image">
+                <a className="product__image-link">
+                    <Image src={`https://klkfavorit.ru/wp-content/uploads/e/d/e/ede963a57048da93043ffafdb1cbae68.jpeg`} fill
+                           alt="" className="product__image-img"/>
+                    <img className="product__image-img" src="https://klkfavorit.ru/wp-content/uploads/e/d/e/ede963a57048da93043ffafdb1cbae68.jpeg" alt=""/>
+                </a>
+                <div className="product__image-labels">
+                </div>
+            </div>
 
         </>
     )

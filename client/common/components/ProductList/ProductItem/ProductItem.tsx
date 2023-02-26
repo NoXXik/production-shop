@@ -25,7 +25,7 @@ export default function ProductItem(props: { product: IProduct }) {
             <li className="product-item product-wrapper">
                 <div className="product__image">
                     <a className="product__image-link">
-                        <Image src={`http://smarthome16.ru:5000/productImages/${images[0]}`} fill
+                        <img src={`http://smarthome16.ru:5000/productImages/${images[0]}`}
                                alt="" className="product__image-img"/>
                     </a>
                     <div className="product__image-labels">
