@@ -6,14 +6,12 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'http',
-                hostname: '**',
+                hostname: 'smarthome16.ru',
+                port: '',
+                pathname: '/productImages/**',
             },
         ],
     },
-}
-
-module.exports = {
-    // ... rest of the configuration.
-    nextConfig,
     output: 'standalone',
 }
+module.exports = nextConfig

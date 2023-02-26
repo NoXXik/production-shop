@@ -56,6 +56,12 @@ COPY --from=builder /app/next.config.js ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+COPY src ./src
+COPY public ./public
+COPY next.config.js .
+COPY tsconfig.json .
+
+
 USER nextjs
 
 EXPOSE 3000
