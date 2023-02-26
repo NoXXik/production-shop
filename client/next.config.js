@@ -11,8 +11,7 @@ const nextConfig = {
                 pathname: '/productImages/**',
             },
         ],
-    },
-    output: 'standalone',
+    }
 }
 const ContentSecurityPolicy = `
   default-src 'self';
@@ -39,6 +38,7 @@ const securityHeaders = [
 
 module.exports = {
     nextConfig,
+    output: 'standalone',
     async headers() {
         return [
             {
