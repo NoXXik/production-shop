@@ -14,6 +14,7 @@ function Login() {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
 
+    console.log(import.meta.env.VITE_API_URL)
     const openNotification = (message: string, description: string) => {
         api.info({
             message,

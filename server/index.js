@@ -10,8 +10,8 @@ const path = require('path')
 const {Admin} = require("./models");
 const UserService = require("./services/userService");
 const PORT = 5000
-const execPHP = require('./execphp.js')();
-execPHP.phpFolder = path.resolve(__dirname, 'phpFolder')
+// const execPHP = require('./execphp.js')();
+// execPHP.phpFolder = path.resolve(__dirname, 'phpFolder')
 // const {User, Basket, BasketDevice, Category, Product} = require('./models/models')
 
 
@@ -22,13 +22,13 @@ app.use(express.static(path.resolve(__dirname, 'static')))
 app.use(fileUpload({}))
 app.use('/api', router)
 
-app.use('*.php',function(request,response,next) {
-    execPHP.parseFile(request.originalUrl,function(phpResult) {
-        console.log(phpResult)
-        response.write(phpResult);
-        response.end();
-    });
-});
+// app.use('*.php',function(request,response,next) {
+//     execPHP.parseFile(request.originalUrl,function(phpResult) {
+//         console.log(phpResult)
+//         response.write(phpResult);
+//         response.end();
+//     });
+// });
 
 
 // Error handling

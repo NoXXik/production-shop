@@ -6,9 +6,8 @@ WORKDIR /app
 
 # Копируем файлы package.json и package-lock.json в рабочую директорию
 COPY package*.json ./
-RUN npm install -g react-scripts
 # Устанавливаем переменные окружения
-ENV NODE_ENV=production
+#ENV NODE_ENV=production
 #ENV API_URL=https://api.example.com
 
 # Устанавливаем зависимости
@@ -21,4 +20,4 @@ COPY . .
 RUN npm run build
 
 # Запускаем приложение при запуске контейнера
-CMD ["npm", "start"]
+CMD ["node", "server.js"]

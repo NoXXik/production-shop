@@ -7,7 +7,6 @@ import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../common/hooks/redux/reduxHooks";
 import { setFilter, setReadyFilter } from "../../common/store/slices/filterSlice";
 import { useGetProductsMutation, useLazyGetFiltersQuery } from "../../common/store/api/categoryAPI";
-import FiltersLayout from "../../common/components/FiltersLayout/FiltersLayout";
 import { setProducts } from "../../common/store/slices/productSlice";
 import { ParsedUrlQuery } from "querystring";
 import ProductList from "../../common/components/ProductList/ProductList";
@@ -22,11 +21,11 @@ export default function Category({products, filters, readyFilters}: { products: 
     const dispatch = useAppDispatch()
     const router = useRouter()
     const data = parseQuery(router.query)
-    
+
     const [productsSPA, setProductsSPA] = useState<IProducts | null>(null)
     const spaMode = useAppSelector(state => state.utils.spaMode)
     const filter = useAppSelector(state => state.filter.filters)
-    
+
 
     if(productsSPA) {
         products = productsSPA
@@ -49,7 +48,7 @@ export default function Category({products, filters, readyFilters}: { products: 
             const data = parseQuery(router.query)
             if(!productIsSuccess && !productIsLoading) {
                 getProducts(data)
-                
+
             }
 
             if(!filter && !filterIsLoading) {
@@ -73,7 +72,7 @@ export default function Category({products, filters, readyFilters}: { products: 
     if(!readyFilters && products && filter) {
         readyFilters = getOutFilters(products.filters, filter, data)
     }
-    
+
     if(!filters) {
         filters = filter
     }
@@ -83,7 +82,6 @@ export default function Category({products, filters, readyFilters}: { products: 
     return (
         <>
             <div className="catalog__body">
-                {(products && filters) && <FiltersLayout readyFilters={readyFilters} data={data} router={router} filters={products.filters} mainFilters={filters}/>}
                 <div className="catalog__content">
                     {/* <ProductList products={products}></ProductList> */}
                 </div>
@@ -125,7 +123,7 @@ export const getOutFilters = (productFilters: IProductFilter[], filters: IFilter
                                 // console.log(data.filters[d][f],filters[j].translit,productFilters[i].value)
                                 if(data.filters[d][f].key === filters[j].translit && data.filters[d][f].value === productFilters[i].value) {
                                     outList.push({title: filters[j].title, translit: filters[j].translit, filter:{title: filters[j].values.value_title, translit: productFilters[i].value, count: productFilters[i].count, checked: true}})
-                                } 
+                                }
                                 // else {
                                 //     outList.push({title: filters[j].title, translit: filters[j].translit, filter:{title: filters[j].values.value_title, translit: productFilters[i].value, count: productFilters[i].count, checked: false}})
                                 // }
@@ -150,7 +148,7 @@ export const getOutFilters = (productFilters: IProductFilter[], filters: IFilter
         } else if(outList[i].title === readyFilters[g].title){
             readyFilters[g].filters.push(outList[i].filter)
         }
-        
+
     }
     console.log('getOutFilters', readyFilters)
     return readyFilters
