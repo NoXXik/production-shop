@@ -1,8 +1,8 @@
 {
   "development": {
-    "username": "postgres",
+    "username": "root",
     "password": "1234",
-    "database": "test_shop_db",
+    "database": "production",
     "host": "127.0.0.1",
     "dialect": "postgres"
   }
