@@ -32,6 +32,12 @@ services:
     build: ./server
     ports:
       - "5000:5000"
+  admin-react:
+    container_name: admin-react
+    restart: always
+    build: ./admin
+    ports:
+      - "3030:3000"
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4

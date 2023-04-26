@@ -37,7 +37,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
-# You only need to copy next.config.js if you are NOT using the default configuration
+# You only need to copy next.config_.js if you are NOT using the default configuration
 COPY --from=builder /app/next.config.js ./
 
 # https://nextjs.org/docs/advanced-features/output-file-tracing

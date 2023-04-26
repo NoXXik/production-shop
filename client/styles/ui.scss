@@ -1,4 +1,5 @@
 
+@import "styles/variables";
 
 // Orange button
 ._button-orange {
@@ -98,16 +99,16 @@
     border: none;
     background-color: white;
     font-size: 8px;
-    color: $gray;
+    color: $gray-color;
     transition: all 300ms ease;
     &._active::before {
         transform: rotate(-180deg);
-        color: white;
+        color: $orange-color;
 
     }
     &._active {
-        background-color: $orange;
-        color: $gray;
+        background-color: $white-color;
+        color: $orange-color;
 
     }
 }
@@ -115,22 +116,21 @@
 
 
 ._link-sidebar {
-    font-family: $fontFamily;
+    font-family: 'Arial';
     font-size: 16px;
-    color: $gray;
+    color: $gray-color;
     text-decoration: none;
     // &._active {
     //     color: $orange;
     // }
     &._active{
-        color: white;
+        color: $orange-color;
     }
 }
 
 ._link-sidebar:hover {
-    color: $orange;
+    color: $orange-color;
     cursor: pointer;
     &._active {
-        color: white;
     }
 }

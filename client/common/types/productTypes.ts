@@ -7,16 +7,10 @@ export interface IProducts {
   products: IProduct[];
 }
 
-// export interface IProduct {
-//   id: number;
-//   price: number;
-//   title: string;
-//   createdAt: string;
-//   updatedAt: string;
-//   categoryId?: any;
-//   category_name: string;
-//   product_filters: object;
-// }
+export interface CartProduct {
+  id: string;
+  count: number;
+}
 
 export interface IProductFilter {
   key: string;
@@ -59,57 +53,8 @@ export interface IProductResponse {
   count: number,
   products: IProduct[],
   filters: IReadyFilter[],
-  
+
 }
-
-
-// new product type
-
-// [
-//   {
-//       "id": "7c84fb90-12c4-11e1-840d-7b35c4ee775a",
-//       "title": "Видеокамера Optimus 2.8",
-//       "meta_title": "Купить IP видеокамеру Optimus 2.8 в Казани",
-//       "title_translit": "videokamera-optimus-2-8",
-//       "vendor_code": "2345164",
-//       "description": "Product description ....",
-//       "meta_description": "Meta description",
-//       "category_name": "kamery-ip-videonablyudeniya",
-//       "product_filters": {
-//           "cvet": "belyy"
-//       },
-//       "images": [
-//           "image-name-1",
-//           "image-2"
-//       ],
-//       "currently_price": 1596,
-//       "stock_count": 10,
-//       "stock_status": "В наличии",
-//       "characteristics": [
-//           {
-//               "title": "Cvet",
-//               "value": "Belyy"
-//           }
-//       ],
-//       "files": [
-//           "file-name-1",
-//           "file-name-2"
-//       ],
-//       "rating": 0,
-//       "reviews_count": 0,
-//       "orders_count": 0,
-//       "discount": {
-//           "discount": 12,
-//           "expirationDate": "2023-02-05 15:00:01.244+03",
-//           "param": "percent"
-//       },
-//       "new_label": true,
-//       "hit_label": false,
-//       "createdAt": "2022-12-21T12:00:01.244Z",
-//       "updatedAt": "2022-12-21T12:00:01.244Z",
-//       "categoryId": 2
-//   }
-// ]
 
 export interface IProduct {
   id: string;
@@ -133,15 +78,24 @@ export interface IProduct {
   discount: IProductDiscount;
   new_label: boolean;
   hit_label: boolean;
-  createdAt: string;
-  updatedAt: string;
-  categoryId: number;
+  width: number,
+  length: number,
+  height: number,
+  weight: number,
+  deleted: boolean,
+  created_at: string;
+  updated_at: string;
+  category_id: number;
+}
+
+export interface ProductPageProps extends IProduct {
+  RelProducts: IProduct[]
 }
 
 export interface IProductDiscount {
   discount: number;
   expirationDate: string;
-  param: string;
+  startDate: string;
 }
 
 export interface IProductCharacteristic {
@@ -166,5 +120,5 @@ export interface IProductCharacteristic {
   // files,
   // discount,
   // new_label,
-  // hit_label, 
+  // hit_label,
   // "categoryId")

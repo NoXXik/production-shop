@@ -1,3 +1,5 @@
+@import "styles/variables";
+
 // <label htmlFor="" className="filter-label">
 //     <span className="filter-chekbox">
 //          <input type="checkbox" className="filter-checkbox__input _form-checkbox" />
@@ -11,31 +13,34 @@
     display: none;
 }
 
-._chek-mark {
-    display: inline-block;
+._check-mark {
+    display: flex;
+    align-items: flex-start;
     font-size: 12px;
-    width: 12px;
-    height: 12px;
-    border: 1px solid $gray;
-    border-radius: 4px;
-    padding: 1px;
+    width: 18px;
+    height: 18px;
+    border: 1px solid $light-gray-color;
+    border-radius: 5px;
+    //padding: 1px;
     &::before {
         opacity: 0;
         color:white
     }
 }
 
-._form-checkbox:checked + ._chek-mark {
-    background-color: $orange;
-    border-color: $orange;
+._form-checkbox:checked + ._check-mark {
+    background-color: $orange-color;
+    border-color: $orange-color;
     &::before {
         opacity: 1;
+        align-self: center;
+        margin-left: 10%;
     }
 }
 
 .filter-label:hover {
     cursor: pointer;
-    color: $gray;
+    color: $gray-color;
 }
 
 

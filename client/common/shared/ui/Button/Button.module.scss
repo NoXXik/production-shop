@@ -1,0 +1,105 @@
+@import "styles/variables";
+
+.Button {
+  cursor: pointer;
+  border: none;
+  border-radius: $button-border-radius;
+  transition: background-color $color-transition ease;
+  display: flex;
+  @include body-text;
+  &:before {
+    color: $white-color;
+  }
+}
+
+.clear {
+  //padding: 15px;
+  outline: none;
+  //border: $white-color 1px solid;
+  background: none;
+  color: $gray-color;
+  i::before {
+    color: $gray-color;
+  }
+  &:hover {
+    i::before{
+      color: $orange-color;
+    }
+  }
+}
+
+
+
+.primary {
+  transition: $color-transition;
+  padding: 16px 44px 16px 44px;
+  background-color: $orange-color;
+  color: $white-color;
+
+  &:hover {
+    background-color: $light-orange-color;
+  }
+}
+
+
+
+.secondary {
+  transition: $color-transition;
+
+  background: none;
+  color: $black-color;
+  border: $orange-color 1px solid;
+
+  &:hover {
+    border-color: $light-orange-color;
+  }
+}
+
+.square {
+  display: inline-block;
+  padding: 0;
+  height: $square-button-size;
+  width: $square-button-size;
+  border-radius: 50%;
+  font-size: 20px;
+  i {
+    font-size: 24px;
+  }
+  i:before {
+    margin-top: 8px;
+    display: inline-block;
+  }
+}
+.gray {
+  transition: $color-transition;
+  padding: 16px 44px 16px 44px;
+  background-color: $light-gray-color;
+  color: $gray-color;
+
+  &:hover {
+    background-color: $light-black-color;
+  }
+  i {
+    font-size: 14px;
+  }
+  i:before {
+    //margin-top: 8px;
+    //display: inline-block;
+    clear: inherit;
+  }
+}
+.disabled {
+  background-color: $light-gray-color;
+  cursor: auto;
+  &:hover {
+    background-color: $light-gray-color;
+  }
+}
+.small {
+  padding: 6px 22px 6px 22px;
+  border-radius: $default-border-radius;
+}
+.buttonicon {
+  //margin-right: 18px;
+  font-size: 20px;
+}

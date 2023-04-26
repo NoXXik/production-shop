@@ -6,6 +6,8 @@ import { getMiddlewareRouteMatcher } from "next/dist/shared/lib/router/utils/mid
 import productSlice from "./slices/productSlice";
 import categoryPanelSlice from "./slices/categoryPanelSlice";
 import utilSlice from "./slices/utilSlice";
+import userSlicer from "./slices/userSlicer";
+import cartSlice from "./slices/cartSlice";
 
 
 export const store = configureStore({
@@ -15,6 +17,8 @@ export const store = configureStore({
         products: productSlice,
         settings: categoryPanelSlice,
         utils: utilSlice,
+        user: userSlicer,
+        cart: cartSlice,
         [categoryAPI.reducerPath]: categoryAPI.reducer,
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(categoryAPI.middleware)

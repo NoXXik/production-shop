@@ -1,6 +1,11 @@
 const {Sequelize} = require('sequelize')
+const {createNamespace} = require('cls-hooked')
 
-module.exports = new Sequelize(
+const namespace = createNamespace('ns')
+Sequelize.useCLS(namespace)
+
+
+const db = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
     process.env.DB_PASSWORD,
@@ -10,3 +15,21 @@ module.exports = new Sequelize(
         port: process.env.DB_PORT
     }
 )
+
+function openConnection() {
+    return db.authenticate();
+}
+
+function closeConnection() {
+    return db.close();
+}
+
+
+module.exports = {
+    db,
+    openConnection,
+    closeConnection,
+};
+
+
+

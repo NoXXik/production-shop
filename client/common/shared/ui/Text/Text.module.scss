@@ -1,0 +1,89 @@
+@import "styles/variables";
+
+.title {
+  color: $black-color;
+}
+
+.text {
+  color: $black-color;
+}
+
+.error {
+  .title {
+    color: $red-color;
+  }
+
+  .text {
+    color: $red-color;
+  }
+}
+
+.warning {
+  .title {
+    color: $orange-color;
+  }
+
+  .text {
+    color: $orange-color;
+  }
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}
+
+.center {
+  text-align: center;
+}
+
+.size_m {
+  .title {
+    font-size: 24px;
+  }
+
+  .text {
+    font-size: 16px;
+  }
+}
+
+.size_l {
+  .title {
+    font-size: 28px;
+  }
+
+  .text {
+    font-size: 18px;
+  }
+}
+
+.size_xl {
+  .title {
+    font-size: 30px;
+  }
+
+  .text {
+    font-size: 22px;
+  }
+}
+
+.black {
+  p {
+    color: $black-color;
+  }
+}
+
+.gray {
+  p {
+    color: $light-black-color;
+  }
+}
+
+.white {
+  p {
+    color: $white-color;
+  }
+}

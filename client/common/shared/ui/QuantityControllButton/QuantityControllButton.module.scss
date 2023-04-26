@@ -1,0 +1,55 @@
+@import "styles/variables";
+
+.quantityButtonBlock {
+  padding: 8px 14px;
+  border: 1px $light-gray-color solid;
+  border-radius: $default-border-radius;
+  display: flex;
+  justify-content: space-between;
+  max-width: 98px;
+  max-height: 42px;
+  align-items: center;
+  box-sizing: border-box;
+  @media (max-width: $md3) {
+    max-width: 140px;
+    max-height: 52px;
+    font-size: 24px;
+    .quantityButton {
+      font-size: 28px;
+    }
+  }
+}
+
+
+.quantityButton{
+  border: none;
+  color: $gray-color;
+  background: none;
+  font-size: 28px;
+  padding: 4px;
+
+  &:hover {
+    color: $black-color;
+  }
+
+}
+
+
+.quantityCounter {
+  color: $black-color;
+  padding-top: 2px;
+}
+
+.quantityButtonIncrement {
+  align-self: center;
+  //justify-content: flex-start;
+  padding-left: 8px;
+
+}
+
+.quantityButtonDecrement {
+  align-self: center;
+  //justify-content: flex-end;
+  padding-bottom: 8px;
+  padding-right: 8px;
+}

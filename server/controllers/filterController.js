@@ -1,17 +1,16 @@
-const {DataTypes} = require("sequelize");
-const {Filter} = require('../models/models')
+const {Filter} = require('../models')
 const sequelize = require("../database/database");
+const {db} = require("../database/database");
 
-
-// values: {type: DataTypes.ARRAY}
-// title: {type: DataTypes.STRING},
 
 class FilterController {
     async create(req, res, next) {
         try {
-            const {title, values, translit} = req.body
-            const filter = await Filter.create({title, values, translit})
-            return res.json({message: 'Filter was created', filter: filter})
+            await db.transaction(async () => {
+                const {title, values, translit} = req.body
+                const filter = await Filter.create({title, values, translit})
+                return res.json({message: 'Filter was created', filter})
+            })
         } catch (e) {
             console.log(e.message)
             return res.status(500).json({message: 'Filter create Error'})
@@ -19,10 +18,12 @@ class FilterController {
     }
     async delete(req, res, next) {
         try {
-            const {id} = req.body
-            const filter = await Filter.findOne({where: {id}})
-            await filter.destroy()
-            return res.json({message: 'Filter was deleted'})
+            await db.transaction(async () => {
+                const {id} = req.body
+                const filter = await Filter.findOne({where: {id}})
+                await filter.destroy()
+                return res.json({message: 'Filter was deleted'})
+            })
         } catch (e) {
             return res.status(500).json({message: 'Filter create Error'})
         }
@@ -31,14 +32,16 @@ class FilterController {
     // Добавление параметра в фильтр по id, values [param1, ...]
     async addToFilter(req, res, next) {
         try {
-            const {id, values} = req.body
-            const filter = await Filter.findOne({where: {id}})
-            if(!filter) {
-                return res.status(400).json({message: 'Filter not found'})
-            }
-            filter.values = values
-            await filter.save()
-            return res.json({message: 'Filter was update'})
+            await db.transaction(async () => {
+                const {id, values} = req.body
+                const filter = await Filter.findOne({where: {id}})
+                if(!filter) {
+                    return res.status(400).json({message: 'Filter not found'})
+                }
+                filter.values = values
+                await filter.save()
+                return res.json({message: 'Filter was update'})
+            })
         } catch (e) {
             return res.status(500).json({message: 'Filter update Error'})
         }

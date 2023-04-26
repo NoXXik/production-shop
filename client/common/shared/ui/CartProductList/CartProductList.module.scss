@@ -1,0 +1,123 @@
+@import "styles/variables";
+
+.cartProductListContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.cartProductList {
+  max-width: 700px;
+  width: 100%;
+  @include body-text();
+}
+.cartProductItem {
+  border: 1px $light-gray-color solid;
+  border-radius: $default-border-radius;
+  display: flex;
+  justify-content: space-between;
+  max-width: 700px;
+  padding: 18px 80px 18px 8px;
+  margin-top: 20px;
+  @media (max-width: 550px) {
+    flex-direction: column;
+    align-items: center;
+    padding: 18px 18px 18px 18px;
+    .cartItemButtons {
+      margin-top: 12px;
+      margin-buttom: 12px;
+
+      justify-content: space-evenly;
+    }
+    .cartItemTotalPrice {
+      margin-top: 12px;
+    }
+    //.cartItem__countButton {
+    //  margin-top: 12px;
+    //}
+  }
+}
+
+.cartItemImage {
+
+  .cartItemImage_img {
+    max-width: 140px;
+    max-height: 140px;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+.cartItemTitle {
+
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cartItemButtons {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+.cartItemPrice {
+  margin-top: 8px;
+}
+
+.cartItem__countButton {
+
+}
+
+.cartItemTotalPrice {
+
+}
+
+.deleteButton {
+  i {
+    font-size: 32px;
+  }
+}
+
+.details__price_discount {
+  .discount_price {
+    color: #8c8c8c;
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 400;
+    text-decoration: line-through;
+    margin-bottom: 14px;
+  }
+  .discount_label {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    background-color: #FF6F00;
+    border: none;
+    border-radius: 44px;
+    padding: 5px 9px;
+    color: #FFFFFF;
+    margin-left: 8px;
+  }
+}
+.cartDetails {
+  margin-top: 20px;
+
+}
+.cartDetails__title {
+}
+.cartDetails__count {
+  margin-top: 12px;
+
+}
+.cartDetails__discount {
+
+}
+.cartDetails__summ {
+
+}
+.cartDetails__button {
+  margin-top: 12px;
+}
+

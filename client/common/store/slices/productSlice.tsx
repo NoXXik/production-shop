@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import { IProduct, IProductFilter, IProductInitialState, IProducts } from "../../types/productTypes"
+import {IProducts } from "../../types/productTypes"
 
 
 
@@ -12,7 +12,6 @@ const productSlice = createSlice({
     initialState: productInitialState,
     reducers: {
         setProducts: (state, action: PayloadAction<IProducts>) => {
-            // console.log(action.payload)
             state.products = action.payload
         },
     }

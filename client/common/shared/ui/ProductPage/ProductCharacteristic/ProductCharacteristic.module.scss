@@ -1,0 +1,30 @@
+@import "styles/variables";
+
+.features__block {
+  padding: 15px;
+}
+.feature__list {
+  display: flex;
+  flex-direction: column;
+}
+.feature__item {
+  display: flex;
+  margin-top: 8px;
+}
+.feature__name {
+  @include body-text();
+  font-size: 18px;
+  border-bottom: 1px $light-gray-color solid;
+  padding-bottom: 4px;
+  width: 50%;
+
+}
+.feature__value {
+  @include body-text();
+  font-size: 18px;
+  //border-bottom: 1px $light-gray-color solid;
+  padding-bottom: 4px;
+  //max-width: 200px
+  margin-left: 22px;
+  width: 50%;
+}

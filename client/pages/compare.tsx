@@ -1,7 +1,13 @@
+import Head from "next/head";
+
 export default function Compare() {
+
     return (
         <>
-            Compare
+            <Head>
+                <title>Сравнение товаров</title>
+            </Head>
+            <h1>Сравнение товаров</h1>
         </>
     )
 }

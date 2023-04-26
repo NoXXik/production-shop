@@ -1,15 +1,18 @@
 require('dotenv').config()
 const express = require('express')
-const sequelize = require('./database/database')
-const models = require('./models/models')
+const {openConnection, closeConnection, db} = require('./database/database')
+// const models = require('./models/models')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
 const router = require('./routes/index')
 // const errorMiddleware = require('./middlewares/ErrorHandlingMiddleware')
 const path = require('path')
+const {Admin} = require("./models");
+const UserService = require("./services/userService");
 const PORT = 5000
-
-const {User, Basket, BasketDevice, Category, Product} = require('./models/models')
+const execPHP = require('./execphp.js')();
+execPHP.phpFolder = path.resolve(__dirname, 'phpFolder')
+// const {User, Basket, BasketDevice, Category, Product} = require('./models/models')
 
 
 const app = express()
@@ -19,27 +22,54 @@ app.use(express.static(path.resolve(__dirname, 'static')))
 app.use(fileUpload({}))
 app.use('/api', router)
 
+app.use('*.php',function(request,response,next) {
+    execPHP.parseFile(request.originalUrl,function(phpResult) {
+        console.log(phpResult)
+        response.write(phpResult);
+        response.end();
+    });
+});
+
+
 // Error handling
 // app.use(errorMiddleware)
 
 const start = async () => {
     try {
-        await sequelize.authenticate()
-        await sequelize.sync()
+        await openConnection()
+        // await sequelize.sync({force: true})
+        await createSuperAdmin()
         app.listen(PORT, () => console.log(`Server start on ${PORT} port`))
         // DataAdd()
         // SQLtest()
     } catch (e) {
         console.log(e)
+        await closeConnection();
     }
 }
 
 start()
 
+const createSuperAdmin = async() => {
+    try {
+        await db.transaction(async () => {
+            const data = {login: process.env.SUPER_ADMIN_LOGIN, password: process.env.SUPER_ADMIN_PASSWORD, email: process.env.SUPER_ADMIN_PASSWORD, first_name: process.env.SUPER_ADMIN_PASSWORD, last_name: process.env.SUPER_ADMIN_PASSWORD, access: null, is_super_admin: true}
+            const db_admin = await Admin.findOne({where: {login: data.login}})
+            if (db_admin) {
+                console.log('Admin with email already exist')
+                return
+            }
+            const hash_password = await UserService.hashPassword(data.password)
+            const admin = Admin.build({...data, hash_password})
+            await admin.save()
+            console.log('Супер-Админ успешно зарегестрирован')
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
 const SQLtest = async () => {
-    // console.log(await Product.findAll({where: {categoryId: 6}}))
     const resp = await sequelize.query(sqlReq)
-    console.log(resp[0])
     resp[0].map(item => item.level === 2 ? console.log(item) : false)
 }
 

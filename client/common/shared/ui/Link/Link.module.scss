@@ -1,0 +1,61 @@
+@import "styles/variables";
+
+.Link {
+  @include link-text;
+  text-decoration: none;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: color $color-transition ease;
+}
+
+.primary {
+  color: $light-black-color;
+  font-size: 20px;
+  &:hover {
+    color: $orange-color;
+  }
+}
+
+.secondary {
+  font-size: 20px;
+  color: $black-color;
+
+  &:hover {
+    color: $orange-color;
+  }
+}
+
+.buttonLink {
+  cursor: pointer;
+  border: none;
+  border-radius: 16px;
+  padding: 12px 25px 12px 25px;
+  transition: background-color $color-transition ease;
+  display: flex;
+  flex-direction: row;
+  @include body-text;
+  background-color: $orange-color;
+  color: $white-color;
+
+  &:hover {
+    background-color: $light-orange-color;
+  }
+  .linkicon {
+    font-size: 24px;
+    margin-right: 10px;
+  }
+}
+
+.mobile {
+  color: $light-black-color;
+  font-size: 24px;
+
+  &:hover {
+    color: $orange-color;
+  }
+}
+.linkicon {
+  font-size: 36px;
+}

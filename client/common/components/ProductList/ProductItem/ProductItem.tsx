@@ -1,7 +1,9 @@
 import React from "react";
 import {IProduct} from "../../../types/productTypes";
-import {Rate} from "antd";
-import Image from 'next/image';
+import AddToCart from "../../AddToCart/AddToCart";
+import {Button, ButtonTheme} from "../../../shared/ui/Button/Button";
+import {AppLink, AppLinkTheme} from "../../../shared/ui/Link/Link";
+import {isDiscountValid, priceWithDiscount} from "../../../utils/isDiscountValid";
 
 
 export default function ProductItem(props: { product: IProduct }) {
@@ -18,45 +20,89 @@ export default function ProductItem(props: { product: IProduct }) {
         stock_status,
         rating,
         new_label,
-        hit_label
+        hit_label,
+        title_translit,
+        category_name,
     } = props.product
     return (
         <>
             <li className="product-item product-wrapper">
                 <div className="product__image">
-                    <a className="product__image-link">
-                        <img src={`http://smarthome16.ru:5000/productImages/${images[0]}`}
+                    <AppLink href={`/catalog/${category_name}/${title_translit}`} className="product__image-link">
+                        <img src={`http://localhost:5000/productImages/${images[0]}`}
                                alt="" className="product__image-img"/>
-                    </a>
-                    <div className="product__image-labels">
+                    </AppLink>
+                    {(hit_label || new_label) && <div className="product__image-labels">
+                        {hit_label && <div className="product__image-label hit-label">
+                            <img src="/label-hit.svg" alt={'label hit'} />
+                        </div>}
+                        {new_label && <div className="product__image-label new-label">
+                             <img src="/label-new.svg" alt={'label new'} />
+                        </div>}
+                    </div>}
+                    <div className="product__image-buttons">
+                        <div className="product__image-button favorite-button">
+                            <Button theme={ButtonTheme.CLEAR} icon={'_icon-favorite'}></Button>
+                        </div>
+                        <div className="product__image-button compare-button">
+                            <Button theme={ButtonTheme.CLEAR} icon={'_icon-compare'}></Button>
+                        </div>
                     </div>
                 </div>
-                <a className="product__name _link">
-                    <span>{title}</span>
-                </a>
-                <div className="product__stat">
-                        <span className="compare-checkbox">
-                            <label htmlFor={String(id)}>
-                                <span className="filter-chekbox">
-                                    <input id={String(id)} type="checkbox" className="filter-checkbox__input _form-checkbox"/>
-                                    <span className="filter-chekbox__chek-mark _chek-mark _icon-checkmark3">
-                                </span>
-                                </span>
-                                <span>Сравнить</span>
-                            </label>
-                        </span>
-                    <a href="" className="product__rating">
-                        <span><Rate disabled defaultValue={rating}/></span>
-                    </a>
-                </div>
-                <div className="product__price-wrapper">
-                    <div className="product__price">
-                        {currently_price} ₽
-                        {discount && <span className="product__price-prev">{(currently_price*((100-discount.discount)/100)).toFixed(0)}</span>}
+                {stock_status === 'В наличии' && <>{(discount && isDiscountValid(discount.startDate, discount.expirationDate)) ?
+                    <>
+                        <div className="product__discount">
+                            <span className="product__discount-label discount-label">-{discount.discount}%</span>
+                        </div>
+                        <AppLink theme={AppLinkTheme.SECONDARY} className="product__name" href={`/catalog/${category_name}/${title_translit}`} ><p>{title}</p></AppLink>
+                        <div className="product__price-wrapper">
+                            <div className="product__price">
+                                {priceWithDiscount(currently_price, discount.discount)} ₽
+                                {discount && <span className="product__price-prev">{currently_price} ₽</span>}
+                            </div>
+                            <AddToCart square={true} className="product__price-cart buy-btn cart-button" id={id} />
+                        </div>
+                    </>
+                    :
+                    <>
+                        <div className="product__discount">
+
+                        </div>
+                        <AppLink theme={AppLinkTheme.SECONDARY} className="product__name" href={`/catalog/${category_name}/${title_translit}`} ><p>{title}</p></AppLink>
+                        <div className="product__price-wrapper">
+                            <div className="product__price">
+                                {currently_price} ₽
+                            </div>
+                            <AddToCart square={true} className="product__price-cart buy-btn cart-button" id={id} />
+                        </div>
+                    </>
+                }</>
+                }
+                {stock_status === 'Нет в наличии' && <>
+                    <div className="product__discount">
+
                     </div>
-                    <button className="_button-gray favorite-btn _icon-favorite"></button>
-                    <button className="_button-gray buy-btn _icon-cart"></button>
-                </div>
+                    <AppLink theme={AppLinkTheme.SECONDARY} className="product__name" href={`/catalog/${category_name}/${title_translit}`} ><p>{title}</p></AppLink>
+                    <div className="product__price-wrapper">
+                        <div className="product__price">
+                            {stock_status}
+                        </div>
+                        {/*<AddToCart disabled={true} square={true} className="product__price-cart buy-btn cart-button" id={id} />*/}
+                    </div>
+                </>}
+                {stock_status === 'Под заказ' && <>
+                    <div className="product__discount">
+
+                    </div>
+                    <AppLink theme={AppLinkTheme.SECONDARY} className="product__name" href={`/catalog/${category_name}/${title_translit}`} ><p>{title}</p></AppLink>
+                    <div className="product__price-wrapper">
+                        <div className="product__price">
+                            {stock_status}
+                        </div>
+                        <AddToCart square={true} className="product__price-cart buy-btn cart-button" id={id} />
+                    </div>
+                </>}
+
             </li>
         </>
     )

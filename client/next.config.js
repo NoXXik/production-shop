@@ -1,4 +1,14 @@
 /** @type {import('next').NextConfig} */
+// const withSitemap = require('next-sitemap')({
+//     // Опции конфигурации
+//     siteUrl: 'https://smarthome16.ru',
+//     changefreq: 'daily',
+//     priority: 0.7,
+//     excludeIndex: true,
+//     sitemapSize: 5000,
+//     generateRobotsTxt: true,
+//
+// });
 
 const nextConfig = {
     reactStrictMode: false,
@@ -19,9 +29,15 @@ const nextConfig = {
         ],
     },
 }
-
+// module.exports = withSitemap({
+//     // Конфигурация Next.js
+//     nextConfig,
+//     output: 'standalone'
+// });
 module.exports = {
+    // Конфигурация Next.js
     nextConfig,
     output: 'standalone'
-}
+};
+
 

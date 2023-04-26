@@ -1,17 +1,18 @@
-const {Product, Category} = require('../models/models');
-const sequelize = require("../database/database");
-const { sqlReq } = require("./categoryController");
+const {Product, ProductRefRelProduct, Reviews,} = require('../models');
+
+const {db: sequelize, db} = require("../database/database");
+const {sqlReq} = require("./categoryController");
+const {Op} = require("sequelize");
 
 // title: {type: DataTypes.STRING},
 // price: {type: DataTypes.FLOAT},
 // filters: {type: DataTypes.JSONB}
 
 class ProductController {
-    async create2 (req, res, next) {
+    async create2(req, res, next) {
         try {
             const {title, price, filters, category_name} = req.body
-            console.log(filters)
-            if (typeof(filters) != 'object') {
+            if (typeof (filters) != 'object') {
                 return res.status(400).json({message: 'Фильтры не указаны'})
             }
             await Product.create({title, price, product_filters: filters, category_name})
@@ -21,84 +22,61 @@ class ProductController {
         }
     }
 
-    async create (req, res, next) {
+    async create(req, res, next) {
         try {
-            const data = req.body
-            // console.log(filters)
-            // if (typeof(filters) != 'object') {
-            //     return res.status(400).json({message: 'Фильтры не указаны'})
-            // }
-            await Product.create(data)
-            return res.json({message: 'Product created'})
+            await db.transaction(async () => {
+                const data = req.body
+                const product = await Product.create(data)
+                if (data.related_products.length && data.related_products.length > 0) {
+                    let products = [];
+                    data.related_products.forEach(prod => {
+                        products.push({product_id: product.id, rel_product_id: prod})
+                    })
+                    await ProductRefRelProduct.bulkCreate(products)
+                }
+                return res.json({message: 'Product created', product})
+            })
         } catch (e) {
             console.log(e)
             return res.status(500).json({message: e})
         }
     }
 
-    async getProductsSimple (req, res, next) {
-        try{
+    async getProductsSimple(req, res, next) {
+        try {
             const response = await Product.findAll()
             const products = response
             return res.json({product: products})
-        } catch(err){
+        } catch (err) {
             return res.status(500).json({message: err.message})
-        }
-    }
-
-    async getProducts(req, res, next) {
-        try{
-            // const queryes = {category: 'kamery-ip-videonablyudeniya', price: [0, 500], limit: '12', offset: '0', sort: ['title', 'desc'], filters: [[{key: 'cvet', value: 'chernyy'}], [{key: 'brend', value: 'optimus'}]]}
-            // const queryes = {category: 'kamery-ip-videonablyudeniya'}
-            console.log(req.body, req.body.filters[0])
-            let {category, price, limit, offset, sort, filters} = req.body
-            limit = limit || 12
-            offset = offset || '0'
-            sort = sort || ['id', 'desc']
-            // map((filter, id) => `${id > 0 ? ' OR ' : ''}product_filters->'${filter.key}'='"${filter.value}"'`).join('')})`: ''
-            let sqlString = `WITH prods AS
-                (select * from products where ${category && `products.category_name = '${category}'`} 
-                ${price ? `AND (price > ${price[0]} AND price < ${price[1]})`: ''} 
-                ${(filters && filters.length > 0) 
-                    ? `AND (
-                        ${filters.map((filter, id) => `${id > 0 ? 'AND ': ''}(${filter.map((fil, id) => `${id>0 ? ' OR ': ''}${`product_filters->'${fil.key}'='"${fil.value}"'`}`).join('')})`).join(' ')}
-                    )`
-                    : ''}),
-                filters AS (select key,value, COUNT(*) from prods, jsonb_each_text(prods.product_filters) GROUP BY key, value),
-                out_prods AS (select * from prods ${sort && `order by ${sort[0]} ${sort[1]}`} ${limit && `limit ${limit}`} ${offset && `offset ${offset}`})
-                select jsonb_build_object('count', (select count(*) from prods), 'products', (select array_to_json(array_agg(row_to_json(out_prods))) from out_prods), 'filters', (select array_to_json(array_agg(row_to_json(filters))) from filters))`
-            console.log(sqlString)
-            const products = await sequelize.query(sqlString)
-            return res.json(products[0][0].jsonb_build_object)
-        } catch (e) {
-            console.log(e)
-            return res.status(500).json({message: e.message})
         }
     }
 
 
     async searchProduct(req, res, next) {
-        try{
+        try {
             const {request} = req.query
-            console.log('request',  request)
+            // let sqlString = `SELECT *
+            // FROM products
+            // WHERE title @@ to_tsquery('${request}:*')`
             let sqlString = `SELECT *
             FROM products
-            WHERE title @@ to_tsquery('${request}:*')`
+            WHERE title ILIKE '%${request}%'`
             const products = await sequelize.query(sqlString)
             return res.json(products[0])
+            // SELECT * FROM table_name WHERE column_name ILIKE '%search_term%';
 
-        } catch(err) {
-            console.log(e)
-            return res.status(500).json({message: e.message})
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({message: JSON.stringify(err)})
         }
     }
 
     async getProducts2(req, res, next) {
-        try{
+        try {
             const {category, limit, offset, sort, filters, lastFilter} = getRequestData(req)
-            console.log(category, limit, offset, sort, filters, lastFilter)
             let sqlString = `WITH prods AS
-                (select * from products where ${category && `products.category_name = '${category}'`} 
+                (select * from products where ${category && `products.category_name = '${category}'`} AND products.deleted = false 
                 ${(filters && filters.length > 0) 
                     ? `AND (
                         ${filters.map((filter, id) => `${id > 0 ? 'AND ': ''}(${filter.map((fil, id) => `${id>0 ? ' OR ': ''}${`product_filters->'${fil.key}'='"${fil.value}"'`}`).join('')})`).join(' ')}
@@ -112,18 +90,97 @@ class ProductController {
 
             // products = {count, filters, mainFilters, products}
             const products = response[0][0].jsonb_build_object
-            if(!products.products){
+            if (!products.products) {
                 return res.json({count: 0, products: [], filters: []})
             }
 
             const readyFilters = getResFilters(products.filters, products.mainFilters, fixArray(filters), lastFilter)
 
 
-            console.log(readyFilters)
             return res.json({count: products.count, products: products.products, filters: readyFilters})
         } catch (e) {
             console.log(e)
             return res.status(500).json({message: e.message})
+        }
+    }
+
+    async getProductByTranslit(req, res, next) {
+        try {
+            const {title_translit} = req.params
+            const product = await Product.findOne({ // This works, passing the alias
+                where: {title_translit: title_translit},
+                include: ['RelProducts']
+            });
+            // console.log(product.toJSON())
+            return res.json(product)
+        } catch (e) {
+            console.log(e)
+            return res.status(500).json({message: 'Error find product'})
+        }
+    }
+
+
+    async getProductsByIds(req, res, next) {
+        try {
+            const {ids} = req.body
+            if (ids.length <= 0) {
+                return res.json([])
+            }
+            const products = await Product.findAll({
+                where: {
+                    id: {
+                        [Op.or]: ids
+                    }
+                }
+            })
+            return res.json(products)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    async changeProductById(req, res, next) {
+        try {
+            await db.transaction(async () => {
+                const data = req.body
+                const product = await Product.findOne({where: {id: data.id}})
+                if(!product) {
+                    return res.status(404).json({message: 'Product ont found'})
+                }
+                await product.update(data)
+                if(data.related_products) {
+                    await ProductRefRelProduct.destroy({where: {product_id: product.id}})
+                    if (data.related_products.length && data.related_products.length > 0) {
+                        let products = [];
+                        data.related_products.forEach(prod => {
+                            products.push({product_id: product.id, rel_product_id: prod})
+                        })
+                        console.log(products)
+                        await ProductRefRelProduct.bulkCreate(products)
+                    }
+                }
+                return res.json({message: 'Product update successfuly'})
+            })
+        } catch (e) {
+            console.log(e)
+            return res.status(500).json({message: JSON.stringify(e)})
+        }
+    }
+    async deleteById(req, res, next) {
+        try {
+            await db.transaction(async () => {
+                const {id} = req.params
+                const product = await Product.findOne({where: {id}})
+                if(!product) {
+                    return res.status(404).json({message: 'Product ont found'})
+                }
+                await product.update({deleted: true})
+
+                return res.json({message: 'Product deleted successfuly'})
+            })
+        } catch (e) {
+            console.log(e)
+            return res.status(500).json({message: JSON.stringify(e)})
         }
     }
 }
@@ -136,20 +193,20 @@ function getReqFilters(query) {
     let filterKeys = Object.keys(query).filter((key) => key[0] == "_")
     let dataFilters = []
     if (filterKeys) {
-    for (let i = 0; i < filterKeys.length; i++) {
-      if (typeof query[filterKeys[i]] === "object") {
-        // console.log('array', query[filterKeys[i]])
-        let out = []
-        const values = query[filterKeys[i]]
-        values.map((val) =>
-          out.push({ key: filterKeys[i].replace("_", ""), value: val })
-        );
-        dataFilters.push(out);
-        } else {
-            dataFilters.push([
-            { key: filterKeys[i].replace("_", ""), value: query[filterKeys[i]] },
-            ]);
-        }
+        for (let i = 0; i < filterKeys.length; i++) {
+            if (typeof query[filterKeys[i]] === "object") {
+                // console.log('array', query[filterKeys[i]])
+                let out = []
+                const values = query[filterKeys[i]]
+                values.map((val) =>
+                    out.push({key: filterKeys[i].replace("_", ""), value: val})
+                );
+                dataFilters.push(out);
+            } else {
+                dataFilters.push([
+                    {key: filterKeys[i].replace("_", ""), value: query[filterKeys[i]]},
+                ]);
+            }
         }
     }
     return dataFilters
@@ -159,23 +216,27 @@ function getReqFilters(query) {
 function getRequestData(req) {
     const category = req.params.category
     const lastFilter = req.body.lastFilter
-    if(!lastFilter){
+    if (!lastFilter) {
         console.log('lastFilter is null')
     } else {
         console.log(lastFilter)
     }
     let {limit, page, sort} = req.query
-    limit = limit | '21'
-    page = page | '1'
-    offset = (page * limit) - limit | '0'
+    console.log(page, limit)
+    let _limit = limit || '21'
+    let _page = page || 1
+    let offset = String(((Number(_page) - 1) * Number(_limit))) | '0'
+    // console.log(offset, _page, page, _limit, 'offset')
     if (sort) {
         sort = sort.split("_")
-
+        if(sort[0] === 'price') {
+            sort[0] = 'currently_price'
+        }
     } else {
         sort = sort = ['id', 'asc']
     }
     const filters = getReqFilters(req.query)
-    return {category, limit, offset, sort, filters, lastFilter}
+    return {category, limit: _limit, offset, sort, filters, lastFilter}
 }
 
 function fixArray(reqFilters/*: IReqFilters[][]*/) {
@@ -186,35 +247,52 @@ function fixArray(reqFilters/*: IReqFilters[][]*/) {
 
 function getResFilters(productFilters/*: IProductFilters[]*/, mainFilters/*: IMainFilters[]*/, reqFilters/*: IReqFilters[]*/, lastFilter/*: IReadyFilter | null*/)/*: IReadyFilter[]*/ {
     let filterArray = []
-    for(let j = 0; j < mainFilters.length; j++) {
-        for(let i = 0; i < productFilters.length; i++ ) {
-            if(productFilters[i].key === mainFilters[j].translit && productFilters[i].value === mainFilters[j].values.value_translit){
-                filterArray.push({title: mainFilters[j].title, translit: mainFilters[j].translit, filter: {title: mainFilters[j].values.value_title, translit: mainFilters[j].values.value_translit, count: productFilters[i].count, checked: false}})
+    for (let j = 0; j < mainFilters.length; j++) {
+        for (let i = 0; i < productFilters.length; i++) {
+            if (productFilters[i].key === mainFilters[j].translit && productFilters[i].value === mainFilters[j].values.value_translit) {
+                filterArray.push({
+                    title: mainFilters[j].title,
+                    translit: mainFilters[j].translit,
+                    filter: {
+                        title: mainFilters[j].values.value_title,
+                        translit: mainFilters[j].values.value_translit,
+                        count: productFilters[i].count,
+                        checked: false
+                    }
+                })
             }
         }
     }
-    for(let i = 0; i < filterArray.length; i++) {
-        for(let j = 0; j < reqFilters.length; j++) {
-            if(filterArray[i].translit === reqFilters[j].key && filterArray[i].filter.translit === reqFilters[j].value) {
+    for (let i = 0; i < filterArray.length; i++) {
+        for (let j = 0; j < reqFilters.length; j++) {
+            if (filterArray[i].translit === reqFilters[j].key && filterArray[i].filter.translit === reqFilters[j].value) {
                 filterArray[i].filter.checked = true
             }
         }
     }
     let readyFilters = []
     let g = 0
-    readyFilters.push({title: filterArray[0].title, translit: filterArray[0].translit, filters: [filterArray[0].filter]})
-    for(let i = 1; i < filterArray.length; i++) {
-        if(filterArray[i].title !== readyFilters[g].title) {
+    readyFilters.push({
+        title: filterArray[0].title,
+        translit: filterArray[0].translit,
+        filters: [filterArray[0].filter]
+    })
+    for (let i = 1; i < filterArray.length; i++) {
+        if (filterArray[i].title !== readyFilters[g].title) {
             g++
-            readyFilters.push({title: filterArray[i].title, translit: filterArray[i].translit, filters: [filterArray[i].filter]})
-        } else if(filterArray[i].title === readyFilters[g].title){
+            readyFilters.push({
+                title: filterArray[i].title,
+                translit: filterArray[i].translit,
+                filters: [filterArray[i].filter]
+            })
+        } else if (filterArray[i].title === readyFilters[g].title) {
             readyFilters[g].filters.push(filterArray[i].filter)
         }
 
     }
-    if(lastFilter) {
-        for(let i = 0; i < readyFilters.length; i++) {
-            if(readyFilters[i].translit === lastFilter.translit){
+    if (lastFilter) {
+        for (let i = 0; i < readyFilters.length; i++) {
+            if (readyFilters[i].translit === lastFilter.translit) {
                 readyFilters[i] = lastFilter
             }
         }
@@ -264,7 +342,6 @@ function getResFilters(productFilters/*: IProductFilters[]*/, mainFilters/*: IMa
 // select jsonb_build_object('products', (select array_to_json(array_agg(row_to_json(out_prods))) from out_prods), 'filters', (select array_to_json(array_agg(row_to_json(filters))) from filters))
 
 
-
 // для вывода всех индексов
 // select *
 // from pg_indexes
@@ -278,8 +355,6 @@ function getResFilters(productFilters/*: IProductFilters[]*/, mainFilters/*: IMa
 //                 filters AS (select key,value, COUNT(*) from prods, jsonb_each_text(prods.product_filters) GROUP BY key, value),
 //                 out_prods AS (select * from prods order by id desc limit 12 offset 0)
 //                 select jsonb_build_object('count', (select count(*) from prods), 'products', (select array_to_json(array_agg(row_to_json(out_prods))) from out_prods), 'filters', (select array_to_json(array_agg(row_to_json(filters))) from filters))
-
-
 
 
 // Добавление товара

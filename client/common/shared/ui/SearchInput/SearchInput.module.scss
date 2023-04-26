@@ -1,0 +1,98 @@
+@import "styles/variables";
+
+.SearchInput {
+  border: none;
+  position: relative;
+  background: none;
+  color: $gray-color;
+  padding-left: 5px;
+  outline: none;
+  font-size: 16px;
+  width: 100%;
+  &::placeholder {
+    color: $gray-color;
+  }
+}
+.SearchInputBlock {
+  position: relative;
+  width: 100%;
+  border: 1px $light-gray-color solid;
+  border-radius: 16px;
+  padding: 12px 8px 12px 12px;
+  box-sizing: border-box;
+}
+
+.searchProductList {
+  position: absolute;
+  display: flex;
+  z-index: $ui-index-6;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 500px;
+  padding: 10px 20px;
+  left: 0;
+  top: 46px;
+  background-color: $white-color;
+  border-radius: $button-border-radius;
+
+  @include shadow-main();
+}
+
+.searchLink {
+  margin-top: 14px;
+  border-bottom: 1px $light-gray-color solid;
+  display: inline-block!important;
+  padding: 0 4px 4px 4px;
+  span {
+    //max-width: 100%;
+    display: inline-block;
+    width: 50%;
+  }
+}
+
+
+.searchButton {
+  position: absolute;
+  //top: 0;
+  right: 8px;
+}
+
+.mobile {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  z-index: 20;
+  height: calc(100vh - 50px);
+  box-sizing: border-box;
+  background-color: $background-color;
+  padding: 15px;
+}
+
+.mobileCloseBtn {
+  i {
+    font-size: 24px;
+    align-self: center;
+    //margin-right: 18px;
+    margin-left: 6px;
+  }
+}
+.inputBlock {
+  display: flex;
+}
+.searchProductListMobile {
+  display: flex;
+  flex-direction: column;
+}
+
+//.searchLinkTitle {
+//  display: inline-block;
+//
+//}
+//.searchLinkDiscountPrice {
+//  display: inline-block;
+//}
+//.searchLinkPrice {
+//  display: inline-block;
+//}

@@ -24,9 +24,26 @@ class fileController {
         try {
             const file = req.files.file
             const name = req.body.name
-            console.log(req)
 
             let filePath = path.join(__dirname, '..', 'static', 'productFiles', name)
+            if (fs.existsSync(filePath)) {
+                return res.status(400).json({message: 'File already exist'})
+            }
+            file.mv(filePath)
+            // const type = file.name.split('.').pop()
+
+            return res.status(200).json({path: filePath})
+        } catch (e) {
+            console.log(e)
+            return res.status(500).json({message: 'Error upload file'})
+        }
+    }
+    async categoryImageUpload(req, res) {
+        try {
+            const file = req.files.file
+            const name = req.body.name
+
+            let filePath = path.join(__dirname, '..', 'static', 'categoryImages', name)
             if (fs.existsSync(filePath)) {
                 return res.status(400).json({message: 'File already exist'})
             }

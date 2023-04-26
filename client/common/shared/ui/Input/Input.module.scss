@@ -1,0 +1,33 @@
+@import "styles/variables";
+
+.Input {
+  border: none;
+  background: none;
+  color: $light-black-color;
+  padding-left: 5px;
+  outline: none;
+  font-size: 16px;
+  width: 100%;
+  &::placeholder {
+    color: $light-black-color;
+  }
+
+}
+
+.inputblock {
+  border-bottom: 1px $light-black-color solid;
+  max-width: 285px;
+  position: relative;
+}
+
+.focused {
+  border-color: $orange-color;
+}
+
+.errorMessage {
+  font-family: 'Arial';
+  position: absolute;
+  top: 24px;
+  left: 4px;
+  color: $red-color;
+}

@@ -7,8 +7,8 @@
 
 //<Шрифт по умолчанию>==========================================================================================
 //$fontFamily: Gilroy, sans-serif;
-$fontFamily: PT Sans,Helvetica,Arial,sans-serif;
-$fontSize: 20;
+$fontFamily: Arial, sans-serif;
+$fontSize: 20px;
 
 // Переменные
 
@@ -52,11 +52,17 @@ $md4: 479.98;
     //min-height: 75%;
   }
 
+  .main {
+    margin-bottom: 28px;
+    min-height: 100vh;
+
+  }
+
   ._link {
     text-decoration: none;
     color: $gray;
+    font-size: 20px;
     font-family: $fontFamily;
-    font-size: $fontSize;
     transition: color 150ms ease;
   }
 
@@ -78,30 +84,77 @@ $md4: 479.98;
 @import '../common/components/ProductList/ProductList.scss';
 @import '../common/components/ProductList/ProductItem/ProductItem.scss';
 @import '../common/components/BreadCrumbs/BreadCrumbs.scss';
+@import '../common/shared/ui/ProductSlider/ProductSlider.scss';
 
 
-@import './icons.scss';
+//@import './icons.scss';
+@import './new-icons';
 @import './ui.scss';
 @import './forms.scss';
+
 // Размеры заголовков
 h1 {
-    font-size: 64px;
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 37px;
+  @media screen and (max-width:$md3) {
+    font-size: 28px;
+    line-height: 140%;
+  }
 }
 h2 {
-    font-size: 48px;
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 140%;
+  @media screen and (max-width:$md3) {
+    font-size: 20px;
+  }
 }
 h3 {
-    font-size: 32px;
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 140%;
+  @media screen and (max-width:$md3) {
+    font-size: 18px;
+  }
 }
 h4 {
-    font-size: 24px;
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 150%;
 }
 h5 {
-    font-size: 16px;
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
 }
 h6 {
-    font-size: 12px;
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
 }
+
+p {
+  font-family: 'Arial';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+}
+
+
 
 
 
@@ -123,3 +176,140 @@ h6 {
 //    padding: 0px 10px;
 //  }
 //}
+
+
+.icon-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-family: 'fontawesome';
+  text-align: center;
+  color: #ffffff;
+  background-color: #007bff;
+  border: none;
+  cursor: pointer;
+
+  .icon {
+    display: inline-block;
+    font-size: 20px;
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: $md3) {
+  .main {
+    padding: 64px 0 0 0;
+  }
+}
+
+.ant-skeleton {
+  width: 100% !important;
+  //height: 100% !important;
+}
+
+.ant-result-extra {
+  display: flex;
+  justify-content: center;
+}
+
+.empty-cart__container {
+  display: flex;
+  justify-content: center;
+}
+
+.empty-cart {
+  max-width: 428px;
+}
+.empty-cart__image {
+  justify-content: center;
+  .empty-cart__image_img {
+    max-width: 216px;
+    max-height: 232px;
+  }
+}
+
+.empty-cart__title {
+  margin-top: 12px;
+
+}
+
+.empty-cart__button {
+  margin-top: 12px;
+}
+
+.submit-order__map {
+  //padding: 5px;
+  //border: 1px $light-gray-color solid;
+  //border-radius: $button-border-radius;
+  margin-top: 24px;
+
+  box-sizing: border-box;
+}
+.submit-order__user-data {
+  margin-top: 38px;
+}
+
+.submit-order__inputs {
+  display: flex;
+  flex-wrap: wrap;
+  div {
+    margin-left: 24px;
+    margin-top: 38px;
+    width: 320px;
+  }
+}
+.submit-order__delivery-block {
+  margin-top: 38px;
+}
+.submit-order__order-details {
+  margin-top: 38px;
+  .item {
+    margin-top: 8px;
+  }
+  .submit-order__summ {
+    margin-bottom: 12px;
+  }
+}
+.submit-order_recaptcha {
+  margin-top: 28px;
+  margin-bottom: 28px;
+}
+.submit-order__agreement {
+  font-size: 18px;
+  margin-top: 28px;
+}
+.CDEK-widget {
+  border-radius: $button-border-radius;
+  @include shadow-main();
+}
+
+.support-order_block {
+}
+.support-order_description {
+  //max-width: 600px;
+  margin-top: 28px;
+
+}
+.support-order_input-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+.support-order_item {
+  margin-top: 28px;
+  max-width: 600px;
+  width: 100%;
+}
+.support-order_button {
+  margin-top: 28px;
+}
+
+.support-order_title {
+  font-size: 28px;
+}
+.support-order_recaptcha {
+  max-width: 285px;
+  margin-top: 28px;
+}
