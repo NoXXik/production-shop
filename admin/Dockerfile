@@ -1,12 +1,12 @@
 # Начинаем с базового образа Node.js
-FROM node:14-alpine
+FROM node:18-alpine AS base
 
 # Устанавливаем рабочую директорию внутри образа
 WORKDIR /app
 
 # Копируем файлы package.json и package-lock.json в рабочую директорию
 COPY package*.json ./
-
+RUN npm install -g react-scripts
 # Устанавливаем переменные окружения
 ENV NODE_ENV=production
 #ENV API_URL=https://api.example.com
