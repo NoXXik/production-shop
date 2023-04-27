@@ -17,13 +17,16 @@ services:
     restart: always
     image: postgres:15.2-alpine
     environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+#      POSTGRES_DB: ${DB_NAME}
+#      POSTGRES_USER: ${DB_USER}
+#      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: production
     ports:
       - "5432:5432"
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+      - ../postgres_data:/var/lib/postgresql/data
   expressjs:
     container_name: express-api
     restart: always
@@ -46,4 +49,9 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
       - "5050:80"
+    volumes:
+      - ../pgadmin-data:/var/lib/pgadmin
 
+volumes:
+  postgres-data:
+  pgadmin-data:
