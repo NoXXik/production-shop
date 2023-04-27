@@ -29,7 +29,7 @@ export default function ProductItem(props: { product: IProduct }) {
             <li className="product-item product-wrapper">
                 <div className="product__image">
                     <AppLink href={`/catalog/${category_name}/${title_translit}`} className="product__image-link">
-                        <img src={`http://localhost:5000/productImages/${images[0]}`}
+                        <img src={`${process.env.NEXT_PUBLIC_STATIC_URL}/productImages/${images[0]}`}
                                alt="" className="product__image-img"/>
                     </AppLink>
                     {(hit_label || new_label) && <div className="product__image-labels">

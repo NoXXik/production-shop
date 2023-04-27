@@ -6,7 +6,7 @@ import {Carousels, CreateSupportOrder, SubmitOrder} from "../../types/utilTypes"
 
 export const categoryAPI = createApi({
     reducerPath: 'categoryAPI',
-    baseQuery: fetchBaseQuery({baseUrl: `${process.env.API_URL}`}),
+    baseQuery: fetchBaseQuery({baseUrl: `${process.env.NEXT_PUBLIC_API_URL}`}),
     endpoints: builder => ({
         getProducts: builder.mutation<IProducts, any>({
             query: (data) => ({

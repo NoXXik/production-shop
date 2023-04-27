@@ -104,7 +104,7 @@ const ShoppingCart: React.FC<Props> = ({products}) => {
             <div className={cls.cartProductList}>
                 {cartItems && cartItems.map(item => <div key={item.id} className={cls.cartProductItem}>
                     <div className={cls.cartItemImage}><img className={cls.cartItemImage_img}
-                                                            src={`http://localhost:5000/productImages/${item.image}`}/>
+                                                            src={`${process.env.NEXT_PUBLIC_STATIC_URL}/productImages/${item.image}`}/>
                     </div>
                     <div className={cls.column}>
                         <div className={cls.cartItemTitle}>

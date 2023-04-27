@@ -1,5 +1,4 @@
 /client/node_modules
 /client/oldPages
-
-/server/node_modules
+./server/node_modules
 /admin/node_modules

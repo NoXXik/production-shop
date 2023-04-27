@@ -5,6 +5,7 @@ import {AppLink, AppLinkTheme} from "../../shared/ui/Link/Link";
 import {Button, ButtonTheme} from "../../shared/ui/Button/Button";
 import {isDiscountValid, priceWithDiscount} from "../../utils/isDiscountValid";
 import AddToCart from "../AddToCart/AddToCart";
+import * as process from "process";
 
 
 export default function CategoryList({categories}: {categories: INavbarCategory[] | null}){
@@ -16,7 +17,7 @@ export default function CategoryList({categories}: {categories: INavbarCategory[
                     <React.Fragment key={category.id}>
                         <div className="category">
                             <AppLink href={`/catalog/${category.translit}`}>
-                                <img src={`http://localhost:5000/categoryImages/${category.image}`} alt={category.title} />
+                                <img src={`${process.env.NEXT_PUBLIC_STATIC_URL}/categoryImages/${category.image}`} alt={category.title} />
                                 <span>{category.title}</span>
                             </AppLink>
                         </div>

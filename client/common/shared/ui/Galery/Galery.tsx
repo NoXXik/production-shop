@@ -24,14 +24,14 @@ const Gallery: React.FC<GalleryProps> = ({ images , alt}) => {
                     <img
                         className={classNames(cls.smallImage, {[cls.selectedImage]: image === mainImage}, [])}
                         key={image}
-                        src={`http://localhost:5000/productImages/${image}`}
+                        src={`${process.env.NEXT_PUBLIC_STATIC_URL}/productImages/${image}`}
                         alt={alt ? alt: "Small image"}
                         onMouseOver={() => handleClick(image)}
                     />
                 ))}
             </div>
             <div className={cls.mainImage}>
-                <img src={`http://localhost:5000/productImages/${mainImage}`} alt={alt ? alt: "Main image"} />
+                <img src={`${process.env.NEXT_PUBLIC_STATIC_URL}/productImages/${mainImage}`} alt={alt ? alt: "Main image"} />
             </div>
         </div>
     );
