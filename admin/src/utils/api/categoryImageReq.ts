@@ -13,7 +13,7 @@ export async function uploadCategoryImage(file: Blob, name: string) {
             //     headers: {Authorization: `Bearer ${user.user?.token}`},
             // });
             formData.append('name', name)
-            const response = axios.post(`${process.env.API_URL}/api/upload/category-image`, formData);
+            const response = axios.post(`${import.meta.env.VITE_API_URL}/api/upload/category-image`, formData);
             resolve(response)
         } catch (e) {
             console.log(e)
