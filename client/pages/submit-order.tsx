@@ -145,9 +145,9 @@ export default function Compare() {
             showErrors: true,
             showLogs: true,
             hideMessages: false,
-            path: 'http://localhost:3000/sdek/widget/scripts/',
-            servicepath: 'http://localhost:8080/sdek/widget/scripts/service.php', //ссылка на файл service.php на вашем сайте
-            templatepath: 'http://localhost:8080/sdek/widget/scripts/template.php',
+            path: `${process.env.NEXT_PUBLIC_SITE_URL}/sdek/widget/scripts/`,
+            servicepath: `${process.env.NEXT_PUBLIC_PHP_URL}/sdek/widget/scripts/service.php`, //ссылка на файл service.php на вашем сайте
+            templatepath: `${process.env.NEXT_PUBLIC_PHP_URL}/sdek/widget/scripts/template.php`,
             choose: true,
             popup: false,
             country: 'Россия',
