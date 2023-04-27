@@ -49,6 +49,10 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
       - "5050:80"
+  php:
+    image: php:8.1-fpm
+    volumes:
+      - './phpSrc:/var/www/html'
 
 volumes:
   postgres-data:
