@@ -14,10 +14,9 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./data/nginx:/etc/nginx/conf.d
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www
-      - ./public:/usr/share/nginx/html
+      - www-html:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d
+      - etc-letsencrypt:/etc/letsencrypt
   postgres:
     container_name: pg_db
     restart: always
@@ -61,10 +60,14 @@ services:
       - './phpSrc:/var/www/html'
   certbot:
     image: certbot/certbot
+    depends_on:
+      - nginx
+    container_name: certbot
     restart: unless-stopped
     volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+      - etc-letsencrypt:/etc/letsencrypt
+      - www-html:/var/www/html
+    command:
+      - certonly --webroot --webroot-path=/var/www/html --email ildarsharifullin1994@mail.ru --agree-tos --no-eff-email --staging -d smarthome16.ru
 volumes:
   postgres-data:
