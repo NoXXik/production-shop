@@ -7,7 +7,7 @@ export async function uploadImage(file: Blob, name: string) {
             const formData = new FormData()
             formData.append('file', file)
             formData.append('name', name)
-            const response = axios.post(`${import.meta.env.VITE_API_URL}/api/upload/image`, formData);
+            const response = axios.post(`${import.meta.env.VITE_API_URL}/upload/image`, formData);
             resolve(response)
         } catch (e) {
             console.log(e)

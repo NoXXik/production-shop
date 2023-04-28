@@ -9,7 +9,7 @@ import {useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../utils/hooks/reduxHooks";
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_API_URL}/api`,
+    baseUrl: `${import.meta.env.VITE_API_URL}/`,
     prepareHeaders: (headers, { getState }) => {
         const token = localStorage.getItem('access_token')
         if (token) {
