@@ -44,7 +44,7 @@ services:
     restart: always
     build: ./admin
     ports:
-      - "3000:3000"
+      - "3030:3030"
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
