@@ -6,7 +6,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // Method to source urls from cms
     // const urls = await fetch('https//example.com/api')
     // (await axios.get(`http://${process.env.API_HOST}:${process.env.API_PORT}/api/product/get_by_translit/${title}`)).data as
-    const products = (await axios.get(`${process.env.API_URL}/api/utils/get-sitemap-product`)).data as {category_name: string, title_translit: string, updated_at: string}[]
+    const products = (await axios.get(`${process.env.API_URL}/utils/get-sitemap-product`)).data as {category_name: string, title_translit: string, updated_at: string}[]
     let currentDate = new Date();
 
 // вычитание 7 дней из текущей даты

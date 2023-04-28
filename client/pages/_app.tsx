@@ -52,7 +52,7 @@ MyApp.getInitialProps = async(context: AppContext) => {
   }
 
   const pageProps = await App.getInitialProps(context); // Retrieves page's `getInitialProps`
-  const navbarCategories = (await (await axios.get(`${process.env.API_URL}/api/category`)).data) as INavbarCategory[];
+  const navbarCategories = (await (await axios.get(`${process.env.API_URL}/category`)).data) as INavbarCategory[];
   // if (user && typeof (user) === 'object' && token) {
   //   return {...pageProps, navbarCategories, router: context.router, user: {db_user: user, token}}
   // }

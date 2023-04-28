@@ -59,7 +59,7 @@ Home.getInitialProps = async ({req, res, query}: NextPageContext) => {
     if (!req) {
         return {carousels: null}
     }
-    const response = (await axios.get(`${process.env.API_URL}/api/utils/get-all-swipers`)).data as Carousels
+    const response = (await axios.get(`${process.env.API_URL}/utils/get-all-swipers`)).data as Carousels
     return {carousels: response}
 }
 

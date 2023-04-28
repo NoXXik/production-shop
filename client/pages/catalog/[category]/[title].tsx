@@ -101,7 +101,7 @@ ProductPage.getInitialProps = async ({req}: NextPageContext) => {
     const reg = new RegExp('(/catalog/[\\s\\S]+/)')
     const title = req?.url?.replace(reg, '')
     if (title) {
-        const response = (await axios.get(`${process.env.API_URL}/api/product/get_by_translit/${title}`)).data as ProductPageProps
+        const response = (await axios.get(`${process.env.API_URL}/product/get_by_translit/${title}`)).data as ProductPageProps
         return {product: response}
     }
 

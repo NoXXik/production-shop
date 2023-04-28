@@ -196,7 +196,7 @@ Category2.getInitialProps = async ({req}: NextPageContext) => {
     }
     const reqUrl = req?.url?.replace('/catalog', '')
     if (reqUrl) {
-        const response = (await axios.post(`${process.env.API_URL}/api/product/get_products_2${reqUrl}`)).data as IProductResponse
+        const response = (await axios.post(`${process.env.API_URL}/product/get_products_2${reqUrl}`)).data as IProductResponse
         return {props: {count: response.count, products: response.products, filters: response.filters}}
     }
 
