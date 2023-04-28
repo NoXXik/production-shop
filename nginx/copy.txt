@@ -79,3 +79,16 @@ server {
           include        fastcgi_params;
       }
 }
+
+
+
+
+Successfully received certificate.
+Certificate is saved at: /etc/letsencrypt/live/smarthome16.ru/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/smarthome16.ru/privkey.pem
+This certificate expires on 2023-07-27.
+These files will be updated when the certificate renews.
+
+NEXT STEPS:
+- This certificate will not be renewed automatically. Autorenewal of --manual certificates requires the use of an authentication hook script (--manual-auth-hook) but one was not provided. To renew this certificate, repeat this same certbot command before the certificate's expiry date.
+
