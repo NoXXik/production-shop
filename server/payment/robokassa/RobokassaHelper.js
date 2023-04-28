@@ -16,7 +16,7 @@ const DEFAULT_CONFIG = {
     resultUrlRequestMethod: 'POST',
 
     // Additional configuration.
-    paymentUrlTemplate: 'https://auth.robokassa.ru/Merchant/Index.aspx',
+    paymentUrlTemplate: 'https://auth.robokassa.ru/Merchant/Indexjson.aspx',
     debug: false,
     userDataKeyPrefix: 'Shp_',
 
@@ -187,6 +187,7 @@ class RobokassaHelper {
                 }
             });
         } catch (error) {
+            console.log(error)
             res.status(400).send(error.message);
             return;
         }
@@ -203,6 +204,7 @@ class RobokassaHelper {
 
         // Validating token.
         if (!this.validateResultUrlHash(values.signatureValue, values.outSum, values.invId, values.Receipt, userData)) {
+            console.log('Incorrect signature value')
             res.status(400).send('Incorrect signature value');
             return;
         }
