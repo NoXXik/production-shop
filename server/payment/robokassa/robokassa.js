@@ -5,8 +5,8 @@ module.exports = new robokassa({
     // REQUIRED OPTIONS:
     merchantLogin: 'smarthome16',
     hashingAlgorithm: 'sha256',
-    password1: 'Kd7MHoJ7Jb7uonghB4M0', // Test password !!!
-    password2: 'OHWJqRUwl65JkRW378SU', // Test password !!!
+    password1: 'AA1GE75TW6YUekcQT2Ss', // Test password !!!
+    password2: 'd2S0xctK3G9D0xBRmTOJ', // Test password !!!
     culture: 'ru',
     // OPTIONAL CONFIGURATION
     testMode: true, // Whether to use test mode globally
