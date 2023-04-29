@@ -74,10 +74,10 @@ class PaymentController {
                     email: email, // E-Mail of the paying user
                     // outSumCurrency: 'USD', // Transaction currency
                     isTest: true, // Whether to use test mode for this specific transaction
-                    userData: { // You could pass any additional data, which will be returned to you later on
-                        email: email,
-                        order_id: order.id
-                    },
+                    // userData: { // You could pass any additional data, which will be returned to you later on
+                    //     email: email,
+                    //     order_id: order.id
+                    // },
                     receipt
                 };
                 let prods = []
