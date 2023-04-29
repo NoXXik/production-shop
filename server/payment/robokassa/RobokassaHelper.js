@@ -213,8 +213,9 @@ class RobokassaHelper {
                     userData[key] = value;
                 }
             });
+            console.log("VALUES",values)
             // Validating token.
-            if (!this.validateResultUrlHash(values.SignatureValue, values.OutSum, values.InvId, values.Receipt, userData)) {
+            if (!this.validateResultUrlHash(values.SignatureValue, values.OutSum, values.InvId, userData)) {
                 console.log('Incorrect signature value')
                 res.status(400).send('Incorrect signature value');
                 return;
@@ -254,6 +255,7 @@ class RobokassaHelper {
      * @returns {boolean}
      */
     validateResultUrlHash(hash, outSum, invId, userData) {
+        console.log("HASH", hash)
         return (hash.toLowerCase() === this.calculateResultUrlHash(outSum, invId, userData).toLowerCase());
     }
 
