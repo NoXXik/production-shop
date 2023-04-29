@@ -254,7 +254,7 @@ class RobokassaHelper {
      * @returns {boolean}
      */
     validateResultUrlHash(hash, outSum, invId, userData) {
-        return (hash.toLowerCase() == this.calculateResultUrlHash(outSum, invId, userData).toLowerCase());
+        return (hash.toLowerCase() === this.calculateResultUrlHash(outSum, invId, userData).toLowerCase());
     }
 
     /**
