@@ -308,6 +308,7 @@ class RobokassaHelper {
 
         hash.update(value);
 
+        console.log("HASH on calculate", value, hash)
         return hash.digest('hex');
 
     }

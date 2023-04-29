@@ -123,7 +123,7 @@ class PaymentController {
                         //     userData: userData // Will contain all your custom data passed previously, e.g.: "productId"
                         // })
                     console.log('change order status !!!!!!!!!!!!!!!!!!!!!!!!!')
-                    const order = await UserOrder.findOne({where: {invId: values.InvId}})
+                    const order = await UserOrder.findOne({where: {invId: values.invId}})
                     if(!order) {
                         return false
                     }
