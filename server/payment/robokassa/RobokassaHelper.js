@@ -1,4 +1,3 @@
-
 const crypto = require('crypto');
 const url = require('url');
 const _ = require('lodash');
@@ -38,7 +37,7 @@ class RobokassaHelper {
     /**
      * @param {object} config
      */
-    constructor (config) {
+    constructor(config) {
         this.config = _.extend({}, DEFAULT_CONFIG, config);
     }
 
@@ -49,7 +48,7 @@ class RobokassaHelper {
      *
      * @returns {string}
      */
-    async generatePaymentUrl (outSum, invDesc, options) {
+    async generatePaymentUrl(outSum, invDesc, options) {
         const defaultOptions = {
             invId: null,
             email: null,
@@ -103,11 +102,11 @@ class RobokassaHelper {
         }
         let invoiceId = null;
         const response = await axios.post('https://auth.robokassa.ru/Merchant/Indexjson.aspx', formData)
-        if(response.status !== 200) {
+        if (response.status !== 200) {
             throw new Error('Payment Error')
         }
         invoiceId = response.data.invoiceID
-        if(!invoiceId) {
+        if (!invoiceId) {
             throw new Error('InvoiceID is empty')
         }
 
@@ -120,7 +119,7 @@ class RobokassaHelper {
      *
      * @returns {string}
      */
-    calculatePaymentUrlHash (outSum, options) {
+    calculatePaymentUrlHash(outSum, options) {
 
         let values = [
             this.config.merchantLogin,
@@ -128,7 +127,7 @@ class RobokassaHelper {
             (options && options.invId ? options.invId : '')
         ];
 
-        if(options.receipt) {
+        if (options.receipt) {
             // values.push(encodeURI(JSON.stringify(options.receipt)))
             values.push(JSON.stringify(options.receipt))
         }
@@ -163,79 +162,84 @@ class RobokassaHelper {
      * @param {function} callback
      * @param {object} [options]
      */
-    handleResultUrlRequest (req, res, callback, options) {
-
-        console.log('Result URL Request ==============================')
-        if ('function' !== typeof callback) {
-            throw new Error('Callback must be a function');
-        }
-
-        options = options || {};
-
-        const method = (options.requestMethod || this.config.resultUrlRequestMethod);
-
-        // Selecting request data object according to request method.
-        let data = {};
-        switch (method.toUpperCase()) {
-            case 'GET':
-                data = req.query;
-                break;
-            case 'POST':
-                data = req.body;
-                break;
-        }
-
-        // Validating and parsing request.
-        let values = {};
+    handleResultUrlRequest(req, res, callback, options) {
         try {
-            const keys = (options.keys || this.config.resultUrlKeys);
-            _.forEach(keys, (required, key) => {
-                const value = data[key];
-                if (!value && required) {
-                    throw new Error('Missing required key: ' + key);
+            console.log('Result URL Request ==============================')
+            if ('function' !== typeof callback) {
+                throw new Error('Callback must be a function');
+            }
+
+            options = options || {};
+
+            const method = (options.requestMethod || this.config.resultUrlRequestMethod);
+
+            // Selecting request data object according to request method.
+            let data = {};
+            switch (method.toUpperCase()) {
+                case 'GET':
+                    data = req.query;
+                    break;
+                case 'POST':
+                    data = req.body;
+                    break;
+            }
+
+            // Validating and parsing request.
+            let values = {};
+            try {
+                const keys = (options.keys || this.config.resultUrlKeys);
+                _.forEach(keys, (required, key) => {
+                    const value = data[key];
+                    if (!value && required) {
+                        throw new Error('Missing required key: ' + key);
+                    }
+                    if (value) {
+                        const normKey = _.camelCase(key);
+                        values[normKey] = value;
+                    }
+                });
+            } catch (error) {
+                console.log(error)
+                res.status(400).send(error.message);
+                return;
+            }
+
+            // Extracting user data from request.
+            const userData = {};
+            const userDataKeyPrefixLowerCased = this.config.userDataKeyPrefix.toLowerCase();
+            _.forEach(data, (value, key) => {
+                const normKey = key.toLowerCase();
+                if (_.startsWith(normKey, userDataKeyPrefixLowerCased)) {
+                    userData[key] = value;
                 }
-                if (value) {
-                    const normKey = _.camelCase(key);
-                    values[normKey] = value;
+            });
+            // Validating token.
+            if (!this.validateResultUrlHash(values.SignatureValue, values.OutSum, values.InvId, values.Receipt, userData)) {
+                console.log('Incorrect signature value')
+                res.status(400).send('Incorrect signature value');
+                return;
+            }
+
+            const clearedUserData = {};
+            if (userData) {
+                _.forEach(userData, (value, key) => {
+                    const clearedKey = key.substr(this.config.userDataKeyPrefix.length);
+                    clearedUserData[clearedKey] = value;
+                })
+            }
+            console.log('Signature is OK =======+!!!!!!!!!!!!!!!!!!!!!!!!!!')
+            // Triggering user callback function.
+            Promise.resolve(callback(values, clearedUserData)).then(result => {
+                if (false !== result) {
+                    console.log('OK' + values.invId)
+                    res.send('OK' + values.invId);
                 }
             });
         } catch (error) {
-            console.log(error)
-            res.status(400).send(error.message);
-            return;
+            console.log(JSON.stringify(error))
+            res.status(400).send(JSON.stringify(error));
         }
 
-        // Extracting user data from request.
-        const userData = {};
-        const userDataKeyPrefixLowerCased = this.config.userDataKeyPrefix.toLowerCase();
-        _.forEach(data, (value, key) => {
-            const normKey = key.toLowerCase();
-            if (_.startsWith(normKey, userDataKeyPrefixLowerCased)) {
-                userData[key] = value;
-            }
-        });
-        // Validating token.
-        if (!this.validateResultUrlHash(values.SignatureValue, values.OutSum, values.InvId, values.Receipt, userData)) {
-            console.log('Incorrect signature value')
-            res.status(400).send('Incorrect signature value');
-            return;
-        }
-
-        const clearedUserData = {};
-        if (userData) {
-            _.forEach(userData, (value, key) => {
-                const clearedKey = key.substr(this.config.userDataKeyPrefix.length);
-                clearedUserData[clearedKey] = value;
-            })
-        }
-        console.log('Signature is OK =======+!!!!!!!!!!!!!!!!!!!!!!!!!!')
-        // Triggering user callback function.
-        Promise.resolve(callback(values, clearedUserData)).then(result => {
-            if (false !== result) {
-                console.log('OK' + values.invId)
-                res.send('OK' + values.invId);
-            }
-        });
 
     }
 
@@ -249,7 +253,7 @@ class RobokassaHelper {
      *
      * @returns {boolean}
      */
-    validateResultUrlHash (hash, outSum, invId, userData) {
+    validateResultUrlHash(hash, outSum, invId, userData) {
         return (hash.toLowerCase() == this.calculateResultUrlHash(outSum, invId, userData).toLowerCase());
     }
 
@@ -262,7 +266,7 @@ class RobokassaHelper {
      *
      * @returns {string}
      */
-    calculateResultUrlHash (outSum, invId, userData) {
+    calculateResultUrlHash(outSum, invId, userData) {
         // OutSum:InvId:Пароль#2:[Пользовательские параметры]
         let values = [outSum];
 
@@ -294,7 +298,7 @@ class RobokassaHelper {
      *
      * @returns {string}
      */
-    calculateHash (value) {
+    calculateHash(value) {
 
         const hash = crypto.createHash(this.config.hashingAlgorithm);
 
