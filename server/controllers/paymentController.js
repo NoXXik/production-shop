@@ -5,6 +5,7 @@ const {db} = require("../database/database");
 const axios = require("axios")
 const crypto = require("crypto");
 const {or} = require("sequelize");
+
 class PaymentController {
     async createPayment(req, res, next) {
         try {
@@ -26,7 +27,7 @@ class PaymentController {
                 if (products.length && products.length > 0) {
                     products.forEach(product => {
                         db_products.forEach(db_product => {
-                            if(product.id === db_product.id) {
+                            if (product.id === db_product.id) {
                                 let price = db_product.currently_price
                                 // Discount Type
                                 // discount: number;
@@ -83,7 +84,7 @@ class PaymentController {
                 let prods = []
                 products.forEach(prod => {
                     db_products.forEach(db_product => {
-                        if(prod.id === db_product.id) {
+                        if (prod.id === db_product.id) {
                             let price = db_product.currently_price
                             // Discount Type
                             // discount: number;
@@ -115,26 +116,26 @@ class PaymentController {
 
     async callback(req, res, next) {
         try {
-            await db.transaction(async () => {
-                console.log('start', req.body, req.query, req.params)
-                robokassaHelper.handleResultUrlRequest(req, res, async function (values, userData) {
+            console.log('start', req.body, req.query, req.params)
+            robokassaHelper.handleResultUrlRequest(req, res, async function (values, userData) {
+                    await db.transaction(async () => {
                         // console.log({
                         //     values: values, // Will contain general values like "invId" and "outSum"
                         //     userData: userData // Will contain all your custom data passed previously, e.g.: "productId"
                         // })
-                    console.log('change order status !!!!!!!!!!!!!!!!!!!!!!!!!')
-                    const order = await UserOrder.findOne({where: {invId: values.invId}})
-                    if(!order) {
-                        return false
-                    }
-                    order.payment_status = 'Оплачен'
-                    await order.save()
-                    return true
-                    }
-                )
-                // console.log(res)
-                return res.status(200)
-            })
+                        console.log('change order status !!!!!!!!!!!!!!!!!!!!!!!!!')
+                        const order = await UserOrder.findOne({where: {invId: values.invId}})
+                        if (!order) {
+                            return false
+                        }
+                        order.payment_status = 'Оплачен'
+                        await order.save()
+                        return true
+                    })
+                }
+            )
+            // console.log(res)
+            return res.status(200)
         } catch (e) {
 
         }
