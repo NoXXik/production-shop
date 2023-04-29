@@ -4,6 +4,7 @@ const {isDiscountValid, priceWithDiscount} = require("../utils/isDiscountValid")
 const {db} = require("../database/database");
 const axios = require("axios")
 const crypto = require("crypto");
+const {or} = require("sequelize");
 class PaymentController {
     async createPayment(req, res, next) {
         try {
@@ -116,14 +117,22 @@ class PaymentController {
         try {
             await db.transaction(async () => {
                 console.log('start', req.body, req.query, req.params)
-                robokassaHelper.handleResultUrlRequest(req, res, function (values, userData) {
-                        console.log({
-                            values: values, // Will contain general values like "invId" and "outSum"
-                            userData: userData // Will contain all your custom data passed previously, e.g.: "productId"
-                        })
+                robokassaHelper.handleResultUrlRequest(req, res, async function (values, userData) {
+                        // console.log({
+                        //     values: values, // Will contain general values like "invId" and "outSum"
+                        //     userData: userData // Will contain all your custom data passed previously, e.g.: "productId"
+                        // })
+                    const order = await UserOrder.findOne({where: {invId: values.InvId}})
+                    if(!order) {
+                        return false
+                    }
+                    order.payment_status = 'Оплачен'
+                    await order.save()
+                    return true
                     }
                 )
-                console.log('end', req)
+                console.log(res)
+                return res
             })
         } catch (e) {
 

@@ -231,6 +231,7 @@ class RobokassaHelper {
         // Triggering user callback function.
         Promise.resolve(callback(values, clearedUserData)).then(result => {
             if (false !== result) {
+                console.log('OK' + values.invId)
                 res.send('OK' + values.invId);
             }
         });
