@@ -213,9 +213,8 @@ class RobokassaHelper {
                 userData[key] = value;
             }
         });
-
         // Validating token.
-        if (!this.validateResultUrlHash(values.signatureValue, values.outSum, values.invId, values.Receipt, userData)) {
+        if (!this.validateResultUrlHash(values.SignatureValue, values.OutSum, values.InvId, values.Receipt, userData)) {
             console.log('Incorrect signature value')
             res.status(400).send('Incorrect signature value');
             return;
@@ -244,13 +243,12 @@ class RobokassaHelper {
      * @param {string} hash
      * @param {string} outSum
      * @param {string} invId
-     * @param {object} Receipt
      * @param {object} userData
      *
      * @returns {boolean}
      */
-    validateResultUrlHash (hash, outSum, invId, Receipt, userData) {
-        return (hash.toLowerCase() == this.calculateResultUrlHash(outSum, invId, Receipt, userData).toLowerCase());
+    validateResultUrlHash (hash, outSum, invId, userData) {
+        return (hash.toLowerCase() == this.calculateResultUrlHash(outSum, invId, userData).toLowerCase());
     }
 
     /**
@@ -258,20 +256,16 @@ class RobokassaHelper {
      *
      * @param {string} outSum
      * @param {string} invId
-     * @param {object} Receipt
      * @param {object} userData
      *
      * @returns {string}
      */
-    calculateResultUrlHash (outSum, invId, Receipt, userData) {
-
+    calculateResultUrlHash (outSum, invId, userData) {
+        // OutSum:InvId:Пароль#2:[Пользовательские параметры]
         let values = [outSum];
 
         if (invId) {
             values.push(invId);
-        }
-        if (Receipt) {
-            values.push(encodeURI(JSON.stringify(Receipt)))
         }
 
         values.push(this.config.password2);
