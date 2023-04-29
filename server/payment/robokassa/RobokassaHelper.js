@@ -236,7 +236,7 @@ class RobokassaHelper {
                 }
             });
         } catch (error) {
-            console.log(JSON.stringify(error))
+            console.log('Error',JSON.stringify(error), error)
             res.status(400).send(JSON.stringify(error));
         }
 
