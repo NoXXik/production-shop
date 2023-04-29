@@ -227,7 +227,7 @@ class RobokassaHelper {
                 clearedUserData[clearedKey] = value;
             })
         }
-
+        console.log('Signature is OK =======+!!!!!!!!!!!!!!!!!!!!!!!!!!')
         // Triggering user callback function.
         Promise.resolve(callback(values, clearedUserData)).then(result => {
             if (false !== result) {

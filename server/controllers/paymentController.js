@@ -122,6 +122,7 @@ class PaymentController {
                         //     values: values, // Will contain general values like "invId" and "outSum"
                         //     userData: userData // Will contain all your custom data passed previously, e.g.: "productId"
                         // })
+                    console.log('change order status !!!!!!!!!!!!!!!!!!!!!!!!!')
                     const order = await UserOrder.findOne({where: {invId: values.InvId}})
                     if(!order) {
                         return false
@@ -131,8 +132,8 @@ class PaymentController {
                     return true
                     }
                 )
-                console.log(res)
-                return res
+                // console.log(res)
+                return res.status(200)
             })
         } catch (e) {
 
