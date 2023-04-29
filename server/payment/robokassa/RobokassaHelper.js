@@ -165,6 +165,7 @@ class RobokassaHelper {
      */
     handleResultUrlRequest (req, res, callback, options) {
 
+        console.log('Result URL Request ==============================')
         if ('function' !== typeof callback) {
             throw new Error('Callback must be a function');
         }

@@ -192,7 +192,7 @@ const OrderList = () => {
                     full_name: order.User.full_name,
                     email: order.User.email,
                     phone: order.User.phone,
-                    order_sum: sum,
+                    order_sum: order.total_cost,
                     delivery: order.delivery
                 })
             })
