@@ -115,7 +115,7 @@ class PaymentController {
     async callback(req, res, next) {
         try {
             await db.transaction(async () => {
-                console.log('start', req, res)
+                console.log('start', req.body, req.query, req.params)
                 robokassaHelper.handleResultUrlRequest(req, res, function (values, userData) {
                         console.log({
                             values: values, // Will contain general values like "invId" and "outSum"
@@ -123,7 +123,7 @@ class PaymentController {
                         })
                     }
                 )
-                console.log('end', req, res)
+                console.log('end', req)
             })
         } catch (e) {
 
