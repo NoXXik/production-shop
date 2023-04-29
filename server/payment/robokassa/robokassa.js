@@ -10,7 +10,7 @@ module.exports = new robokassa({
     culture: 'ru',
     // OPTIONAL CONFIGURATION
     testMode: true, // Whether to use test mode globally
-    resultUrlRequestMethod: 'POST' // HTTP request method selected for "ResultURL" requests
+    resultUrlRequestMethod: 'GET' // HTTP request method selected for "ResultURL" requests
 
 });
 

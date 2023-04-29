@@ -5,6 +5,6 @@ const router = new Router();
 
 
 router.post('/create', createPayment)
-router.post('/callback', callback)
+router.get('/callback', callback)
 
 module.exports = router
