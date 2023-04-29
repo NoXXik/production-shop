@@ -255,8 +255,10 @@ class RobokassaHelper {
      * @returns {boolean}
      */
     validateResultUrlHash(hash, outSum, invId, userData) {
-        console.log("HASH", hash)
-        return (hash.toLowerCase() === this.calculateResultUrlHash(outSum, invId, userData).toLowerCase());
+        const validate_hash = this.calculateResultUrlHash(outSum, invId, userData).toLowerCase()
+        console.log("HASH", hash, validate_hash)
+
+        return (hash.toLowerCase() === validate_hash);
     }
 
     /**
@@ -286,7 +288,7 @@ class RobokassaHelper {
             });
             values = values.concat(strings.sort());
         }
-
+        console.log('Calculate hash', values.join(':'))
         return this.calculateHash(
             values.join(':')
         );
