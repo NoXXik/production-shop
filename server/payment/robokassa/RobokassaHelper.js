@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const url = require('url');
 const _ = require('lodash');
 const Promise = require('bluebird');
+const axios = require("axios");
 
 
 const DEFAULT_CONFIG = {
@@ -11,6 +12,7 @@ const DEFAULT_CONFIG = {
     merchantLogin: '',
     hashingAlgorithm: 'md5',
     password1: '',
+    culture: 'ru',
     password2: '',
     testMode: false,
     resultUrlRequestMethod: 'POST',
@@ -47,8 +49,7 @@ class RobokassaHelper {
      *
      * @returns {string}
      */
-    generatePaymentUrl (outSum, invDesc, options) {
-
+    async generatePaymentUrl (outSum, invDesc, options) {
         const defaultOptions = {
             invId: null,
             email: null,
@@ -62,6 +63,7 @@ class RobokassaHelper {
             MerchantLogin: this.config.merchantLogin,
             OutSum: outSum,
             Description: invDesc,
+            Culture: this.config.culture,
             SignatureValue: this.calculatePaymentUrlHash(outSum, options),
             Encoding: (options.encoding || 'UTF-8')
         };
@@ -95,12 +97,21 @@ class RobokassaHelper {
                 values[this.config.userDataKeyPrefix + key] = value;
             });
         }
+        const formData = new FormData();
+        for (const [key, value] of Object.entries(values)) {
+            formData.append(key, value);
+        }
+        let invoiceId = null;
+        const response = await axios.post('https://auth.robokassa.ru/Merchant/Indexjson.aspx', formData)
+        if(response.status !== 200) {
+            throw new Error('Payment Error')
+        }
+        invoiceId = response.data.invoiceID
+        if(!invoiceId) {
+            throw new Error('InvoiceID is empty')
+        }
 
-        const oUrl = url.parse(this.config.paymentUrlTemplate, true);
-        delete oUrl.search;
-        _.extend(oUrl.query, values);
-
-        return url.format(oUrl);
+        return `https://auth.robokassa.ru/Merchant/Index/${invoiceId}`;
     }
 
     /**
@@ -118,7 +129,8 @@ class RobokassaHelper {
         ];
 
         if(options.receipt) {
-            values.push(encodeURI(JSON.stringify(options.receipt)))
+            // values.push(encodeURI(JSON.stringify(options.receipt)))
+            values.push(JSON.stringify(options.receipt))
         }
 
         if (options.outSumCurrency) {

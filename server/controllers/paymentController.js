@@ -3,6 +3,7 @@ const {User, UserOrder, User_lk, ProductRefRelProduct, Reviews, Product, UserOrd
 const {isDiscountValid, priceWithDiscount} = require("../utils/isDiscountValid");
 const {db} = require("../database/database");
 const axios = require("axios")
+const crypto = require("crypto");
 class PaymentController {
     async createPayment(req, res, next) {
         try {
@@ -15,7 +16,7 @@ class PaymentController {
                 }
                 let list_id = products.map(product => product.id)
                 const db_products = await Product.findAll({where: {id: list_id, deleted: false}})
-                console.log(db_products, products)
+                // console.log(db_products, products)
                 if (db_products.length !== products.length) {
                     return res.status(400).json({message: 'Товары не найдены'})
                 }
@@ -61,7 +62,7 @@ class PaymentController {
                 }
 
                 const order = await UserOrder.create({user_id: user.id, delivery, total_cost: outSum})
-                const invDesc = comment;
+                let invDesc = comment;
                 const receipt = {
                     sno: "osn",
                     items: productItems
@@ -101,15 +102,9 @@ class PaymentController {
                         }
                     })
                 })
-                const paymentUrl = robokassaHelper.generatePaymentUrl(outSum, invDesc, options);
-                const payment_res = (await axios.get(paymentUrl)).data
-                let invoiceId = payment_res.invoiceID
-                if(!invoiceId) {
-                    throw new Error('invoiceId is undefined')
-                }
+                const paymentUrl = await robokassaHelper.generatePaymentUrl(outSum, invDesc, options)
                 await UserOrderRefProduct.bulkCreate(prods)
-                const order_product = await UserOrder.findOne({where: {id: order.id}, include: [User, Product],})
-                return res.json({paymentUrl: `https://auth.robokassa.ru/Merchant/Index/${invoiceId}`})
+                return res.json({paymentUrl: paymentUrl})
             })
         } catch (error) {
             console.log(error)
