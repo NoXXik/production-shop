@@ -213,9 +213,9 @@ class RobokassaHelper {
                     userData[key] = value;
                 }
             });
-            console.log("VALUES",values)
+            console.log("VALUES",values, userData)
             // Validating token.
-            if (!this.validateResultUrlHash(values.SignatureValue, values.OutSum, values.InvId, userData)) {
+            if (!this.validateResultUrlHash(values.signatureValue, values.outSum, values.invId, userData)) {
                 console.log('Incorrect signature value')
                 res.status(400).send('Incorrect signature value');
                 return;
