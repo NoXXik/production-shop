@@ -10,7 +10,7 @@ const adminAuth = async (req, res, next) =>  {
         }
         const token = authValue.replace('Bearer ', '')
 
-        const decoded = jwt.verify(token, 'secretkey13245')
+        const decoded = jwt.verify(token, process.env.SECRET_KEY)
         if(!decoded) {
             return res.status(401).json({status: 401, error: 'Auth Error: User Not Found'})
         }

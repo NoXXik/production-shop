@@ -164,7 +164,6 @@ class RobokassaHelper {
      */
     handleResultUrlRequest(req, res, callback, options) {
         try {
-            console.log('Result URL Request ==============================')
             if ('function' !== typeof callback) {
                 throw new Error('Callback must be a function');
             }
@@ -213,7 +212,6 @@ class RobokassaHelper {
                     userData[key] = value;
                 }
             });
-            console.log("VALUES",values, userData)
             // Validating token.
             if (!this.validateResultUrlHash(values.signatureValue, values.outSum, values.invId, userData)) {
                 console.log('Incorrect signature value')
@@ -228,16 +226,13 @@ class RobokassaHelper {
                     clearedUserData[clearedKey] = value;
                 })
             }
-            console.log('Signature is OK =======+!!!!!!!!!!!!!!!!!!!!!!!!!!')
             // Triggering user callback function.
             Promise.resolve(callback(values, clearedUserData)).then(result => {
                 if (false !== result) {
-                    console.log('OK' + values.invId)
                     res.send('OK' + values.invId);
                 }
             });
         } catch (error) {
-            console.log('Error',JSON.stringify(error), error)
             res.status(400).send(JSON.stringify(error));
         }
 
@@ -256,7 +251,6 @@ class RobokassaHelper {
      */
     validateResultUrlHash(hash, outSum, invId, userData) {
         const validate_hash = this.calculateResultUrlHash(outSum, invId, userData).toLowerCase()
-        console.log("HASH", hash, validate_hash)
 
         return (hash.toLowerCase() === validate_hash);
     }
@@ -288,7 +282,6 @@ class RobokassaHelper {
             });
             values = values.concat(strings.sort());
         }
-        console.log('Calculate hash', values.join(':'))
         return this.calculateHash(
             values.join(':')
         );
@@ -308,7 +301,6 @@ class RobokassaHelper {
 
         hash.update(value);
 
-        console.log("HASH on calculate", value, hash)
         return hash.digest('hex');
 
     }

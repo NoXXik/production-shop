@@ -355,7 +355,7 @@ export default function MainInfo(props: IMainInfoProps) {
             <Title level={5}>Фото товара</Title>
             <div className='prevImages__block'>
                 {images && images.map(image => (<div className={'productPrevImage'}>
-                    <img className='productList-img-2x' src={`${process.env.API_URL}/productImages/${image}`} alt="product photo"/>
+                    <img className='productList-img-2x' src={`${import.meta.env.VITE_STATIC_URL}/productImages/${image}`} alt="product photo"/>
                     <Button className={'productImageDeleteBtn'} onClick={() => deletePrevImage(image)}><DeleteOutlined /></Button>
                 </div>))}
             </div>
@@ -380,7 +380,7 @@ export default function MainInfo(props: IMainInfoProps) {
             <Title level={5}>Файлы товара</Title>
             <div className='prevFiles__block'>
                 {files && files.map((file, id) => (<div className={'productPrevImage'}>
-                    <a className='productList-file-2x' target={'_blank'} href={`${process.env.API_URL}/productFiles/${file}`}>{`File ${id}`}</a>
+                    <a className='productList-file-2x' target={'_blank'} href={`${import.meta.env.VITE_API_URL}/productFiles/${file}`}>{`File ${id}`}</a>
                     <Button style={{marginLeft: 20}} className={'productFileDeleteBtn'} onClick={() => deletePrevFile(file)}><DeleteOutlined /></Button>
                 </div>))}
             </div>

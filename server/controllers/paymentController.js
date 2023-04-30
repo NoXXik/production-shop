@@ -75,10 +75,10 @@ class PaymentController {
                     email: email, // E-Mail of the paying user
                     // outSumCurrency: 'USD', // Transaction currency
                     isTest: true, // Whether to use test mode for this specific transaction
-                    // userData: { // You could pass any additional data, which will be returned to you later on
-                    //     email: email,
-                    //     order_id: order.id
-                    // },
+                    userData: { // You could pass any additional data, which will be returned to you later on
+                        email: email,
+                        order_id: order.id
+                    },
                     receipt
                 };
                 let prods = []
@@ -116,14 +116,9 @@ class PaymentController {
 
     async callback(req, res, next) {
         try {
-            console.log('start', req.body, req.query, req.params)
+            console.log(req.query)
             robokassaHelper.handleResultUrlRequest(req, res, async function (values, userData) {
                     await db.transaction(async () => {
-                        // console.log({
-                        //     values: values, // Will contain general values like "invId" and "outSum"
-                        //     userData: userData // Will contain all your custom data passed previously, e.g.: "productId"
-                        // })
-                        console.log('change order status !!!!!!!!!!!!!!!!!!!!!!!!!')
                         const order = await UserOrder.findOne({where: {invId: values.invId}})
                         if (!order) {
                             return false
@@ -134,10 +129,30 @@ class PaymentController {
                     })
                 }
             )
-            // console.log(res)
             return res.status(200)
         } catch (e) {
+            return res.status(400)
+        }
+    }
 
+    async failure(req, res, next) {
+        try {
+            await db.transaction(async () => {
+                const {InvId, OutSum} = req.body
+                const order = await UserOrder.findOne({where: {invId: InvId}})
+                if(!order) {
+                    return res.status(400).json({message: 'Order not found'})
+                }
+                const out_sum = OutSum.split('.')[0]
+                if(order.total_cost != out_sum) {
+                    return res.status(400).json({message: 'Order sum is not valid'})
+                }
+                order.payment_status = 'Отменен'
+                await order.save()
+                return res.json({message: 'Order successfully canceled'})
+            })
+        } catch (e) {
+            return res.status(500).json({message: 'Server error', error: JSON.stringify(e)})
         }
     }
 }

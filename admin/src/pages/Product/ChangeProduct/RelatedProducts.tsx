@@ -16,6 +16,7 @@ import produce from 'immer';
 import { IProduct } from '../../../types/productTypes';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
 import SearchCart from '../../../components/UI/SearchCart/SearchCart';
+import {useLazySearchProductsQuery} from "../../../store/api/productAPI";
 
 interface IRelatedProductProps {
     relatedProducts: IProduct[];
@@ -28,14 +29,18 @@ export default function RelatedProducts(props: IRelatedProductProps) {
     const debounceSearch = useDebounce(search, 500)
     const [results, setResults] = useState<IProduct[]>([])
     const {relatedProducts, setRelatedProducts} = props
+    const [searchProduct, {data, isSuccess, isError}] = useLazySearchProductsQuery()
+
     // const [items, setItems] = useState([])
 
     useEffect(() => {
         if(debounceSearch) {
             setOnSearch(true)
-            const res = searchProducts(debounceSearch).then((r) => {
-                setOnSearch(false)
-                setResults(r.data)})
+            searchProduct(debounceSearch)
+
+            // const res = searchProducts(debounceSearch).then((r) => {
+            //     setOnSearch(false)
+            //     setResults(r.data)})
         } else {
             setResults([])
             setOnSearch(false)
@@ -44,7 +49,12 @@ export default function RelatedProducts(props: IRelatedProductProps) {
     },[debounceSearch])
 
     // useEffect(() => {console.log(results)}, [results])
-
+    useEffect(() => {
+        if(data && isSuccess) {
+            setOnSearch(false)
+            setResults(data)
+        }
+    }, [data, isSuccess])
     const items: MenuProps['items'] = results.map((product, id) => ({key: id, label: <><SearchCart props={product}/><Button onClick={() => {
         setSearch('')
         setRelatedProducts(prev => [...prev, product])

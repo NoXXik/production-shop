@@ -9,7 +9,7 @@ export default function SearchCart({props}: {props: IProduct}) {
   return (
     <div className='product-item'>
         <div className="product-image">
-            <img src={`${process.env.API_URL}/productImages/${images[0]}`} alt={title} className="product-img" />
+            <img src={`${import.meta.env.VITE_API_URL}/productImages/${images[0]}`} alt={title} className="product-img" />
         </div>
         <div className="product-content">
             <span className="product-title">{title}</span>

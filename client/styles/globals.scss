@@ -3,8 +3,6 @@
 @import './fonts.scss';
 
 
-
-
 //<Шрифт по умолчанию>==========================================================================================
 //$fontFamily: Gilroy, sans-serif;
 $fontFamily: Arial, sans-serif;
@@ -31,50 +29,52 @@ $md4: 479.98;
 
 //<ОБОЛОЧКА>===========================================================================================================
 .wrapper {
-    max-width: $md1;
-    //min-height: 100%;
-    //overflow: hidden;
-    //display: flex;
-    //flex-direction: column;
-    margin: 0 auto;
-  }
+  max-width: $md1;
+  //min-height: 100%;
+  //overflow: hidden;
+  //display: flex;
+  //flex-direction: column;
+  margin: 0 auto;
+}
 
-  //</ОБОЛОЧКА>===========================================================================================================
+//</ОБОЛОЧКА>===========================================================================================================
 
-  //<ОСНОВНАЯ СЕТКА>===========================================================================================================
-  ._container {
-    max-width: $maxWidthContainer + px;
-    padding: 0 15px;
-    margin: 0 auto;
-    //box-sizing: content-box;
-    //margin-left: auto;
-    //margin-right: auto;
-    //min-height: 75%;
-  }
+//<ОСНОВНАЯ СЕТКА>===========================================================================================================
+._container {
+  max-width: $maxWidthContainer + px;
+  padding: 0 15px;
+  margin: 0 auto;
+  //box-sizing: content-box;
+  //margin-left: auto;
+  //margin-right: auto;
+  //min-height: 75%;
+}
 
-  .main {
-    margin-bottom: 28px;
-    min-height: 100vh;
+.main {
+  margin-bottom: 28px;
+  min-height: 66vh;
 
-  }
 
-  ._link {
-    text-decoration: none;
-    color: $gray;
-    font-size: 20px;
-    font-family: $fontFamily;
-    transition: color 150ms ease;
-  }
+}
 
-  ._link:hover {
-    color: $orange;
-    cursor: pointer;
-  }
 
-  * {
-    font-family: $fontFamily;
-    font-size: $fontSize;
-  }
+._link {
+  text-decoration: none;
+  color: $gray;
+  font-size: 20px;
+  font-family: $fontFamily;
+  transition: color 150ms ease;
+}
+
+._link:hover {
+  color: $orange;
+  cursor: pointer;
+}
+
+* {
+  font-family: $fontFamily;
+  font-size: $fontSize;
+}
 
 @import '../common/components/Navbar/Navbar.scss';
 @import '../common/components/Footer/Footer.scss';
@@ -99,31 +99,34 @@ h1 {
   font-weight: 400;
   font-size: 32px;
   line-height: 37px;
-  @media screen and (max-width:$md3) {
+  @media screen and (max-width: $md3) {
     font-size: 28px;
     line-height: 140%;
   }
 }
+
 h2 {
   font-family: 'Arial';
   font-style: normal;
   font-weight: 400;
   font-size: 28px;
   line-height: 140%;
-  @media screen and (max-width:$md3) {
-    font-size: 20px;
+  @media screen and (max-width: $md3) {
+    font-size: 22px;
   }
 }
+
 h3 {
   font-family: 'Arial';
   font-style: normal;
   font-weight: 400;
   font-size: 24px;
   line-height: 140%;
-  @media screen and (max-width:$md3) {
+  @media screen and (max-width: $md3) {
     font-size: 18px;
   }
 }
+
 h4 {
   font-family: 'Arial';
   font-style: normal;
@@ -131,6 +134,7 @@ h4 {
   font-size: 18px;
   line-height: 150%;
 }
+
 h5 {
   font-family: 'Arial';
   font-style: normal;
@@ -138,6 +142,7 @@ h5 {
   font-size: 16px;
   line-height: 150%;
 }
+
 h6 {
   font-family: 'Arial';
   font-style: normal;
@@ -155,13 +160,9 @@ p {
 }
 
 
-
-
-
-
 // Catalog index.tsx scss
 
-.catalog__body{
+.catalog__body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -199,6 +200,7 @@ p {
 @media (max-width: $md3) {
   .main {
     padding: 64px 0 0 0;
+    min-height: 70vh;
   }
 }
 
@@ -220,8 +222,10 @@ p {
 .empty-cart {
   max-width: 428px;
 }
+
 .empty-cart__image {
   justify-content: center;
+
   .empty-cart__image_img {
     max-width: 216px;
     max-height: 232px;
@@ -245,6 +249,7 @@ p {
 
   box-sizing: border-box;
 }
+
 .submit-order__user-data {
   margin-top: 38px;
 }
@@ -252,32 +257,40 @@ p {
 .submit-order__inputs {
   display: flex;
   flex-wrap: wrap;
+
   div {
     margin-left: 24px;
     margin-top: 38px;
     width: 320px;
   }
 }
+
 .submit-order__delivery-block {
   margin-top: 38px;
 }
+
 .submit-order__order-details {
   margin-top: 38px;
+
   .item {
     margin-top: 8px;
   }
+
   .submit-order__summ {
     margin-bottom: 12px;
   }
 }
+
 .submit-order_recaptcha {
   margin-top: 28px;
   margin-bottom: 28px;
 }
+
 .submit-order__agreement {
   font-size: 18px;
   margin-top: 28px;
 }
+
 .CDEK-widget {
   border-radius: $button-border-radius;
   @include shadow-main();
@@ -285,11 +298,13 @@ p {
 
 .support-order_block {
 }
+
 .support-order_description {
   //max-width: 600px;
   margin-top: 28px;
 
 }
+
 .support-order_input-block {
   display: flex;
   flex-direction: column;
@@ -297,11 +312,13 @@ p {
   align-items: center;
 
 }
+
 .support-order_item {
   margin-top: 28px;
   max-width: 600px;
   width: 100%;
 }
+
 .support-order_button {
   margin-top: 28px;
 }
@@ -309,6 +326,7 @@ p {
 .support-order_title {
   font-size: 28px;
 }
+
 .support-order_recaptcha {
   max-width: 285px;
   margin-top: 28px;

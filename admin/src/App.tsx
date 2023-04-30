@@ -38,6 +38,7 @@ import {useAppDispatch, useAppSelector} from "./utils/hooks/reduxHooks";
 import SuperAdminRoutes from "./utils/helpers/superAdminRoutes";
 import AdminPage from "./pages/Admin/AdminPage";
 import SupportOrderList from "./pages/Support/Orders/SupportOrdersPage";
+import {useLazyCheckAuthQuery} from "./store/api/productAPI";
 
 const {Header, Content, Footer, Sider} = Layout;
 type MenuItem = Required<MenuProps>['items'][number];
@@ -60,11 +61,12 @@ function getItem(
 
 function App({children}: any) {
     const {data: authData, token} = useAppSelector(state => state.auth)
+    const [checkAuth, {data, isSuccess, isError}] = useLazyCheckAuthQuery()
     const [items, setItems] = useState([
         getItem('Управление товарами', 'products', <AppstoreAddOutlined/>, [
             getItem('Товары', '/products'),
             getItem('Добавить товар', '/create-product'),
-            getItem('Изменить товар', '/change-product'),
+            // getItem('Изменить товар', '/change-product'),
             getItem('Управление категориями', '/categories'),
             getItem('Управление фильтрами', '/filters'),
         ]),
@@ -72,10 +74,10 @@ function App({children}: any) {
             getItem('Добавить карусель товаров', '/create-carousel'),
         ]),
         getItem('Заказы', '/orders', <ShoppingCartOutlined/>),
-        getItem('Пользователи', '/users', <TeamOutlined/>),
-        getItem('Статистика', '/dashboard', <BarChartOutlined/>),
+        // getItem('Пользователи', '/users', <TeamOutlined/>),
+        // getItem('Статистика', '/dashboard', <BarChartOutlined/>),
         getItem('Тех.поддержка', '/support', <UserOutlined/>),
-        getItem('E-mail рассылки', '/email-spam', <MailOutlined/>),
+        // getItem('E-mail рассылки', '/email-spam', <MailOutlined/>),
         getItem('Выйти', 'logout', <PoweroffOutlined/>),
     ])
     // const items: MenuItem[] = useMemo(() =>
@@ -111,6 +113,9 @@ function App({children}: any) {
         }
     }
     useEffect(() => {
+        if(route.pathname !== '/login') {
+            checkAuth('')
+        }
         const token = localStorage.getItem('access_token')
         if (!token) {
             navigate('/login')
@@ -145,7 +150,6 @@ function App({children}: any) {
             </div>
         )
     }
-
 
     return (
         <>

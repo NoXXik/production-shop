@@ -47,6 +47,7 @@ import RelatedProducts from './RelatedProducts';
 import ProductDiscount from './ProductDiscount';
 import {createProduct} from '../../../utils/api/createProduct';
 import {useParams} from "react-router-dom";
+import Title from "antd/es/typography/Title";
 
 
 export default function ChangeProduct() {
@@ -387,6 +388,8 @@ export default function ChangeProduct() {
     return (
         <Space direction='vertical' size="large" style={{display: 'flex'}}>
             {contextHolder}
+            <Title level={3}>Изменение товара</Title>
+
             <Tabs defaultActiveKey='1' items={tabItems}></Tabs>
             <div className='loader-container'>
                 {(isLoading || productIsLoading) && <Spin className='loader' size="large"/>}

@@ -1,5 +1,9 @@
 import {Button, Modal, notification, Select, Table, TablePaginationConfig, Tag} from "antd";
-import {useGetOrdersMutation, useSetDeliveryStatusMutation} from "../../../store/api/productAPI";
+import {
+    useGetOrdersMutation,
+    useLazySearchProductsQuery,
+    useSetDeliveryStatusMutation
+} from "../../../store/api/productAPI";
 import React, {useEffect, useState} from "react";
 import {Delivery, DeliveryStatus} from "../../../types/orderTypes";
 import {ColumnsType} from "antd/es/table";
@@ -8,7 +12,7 @@ import {EyeOutlined} from "@ant-design/icons";
 import Search from "antd/es/input/Search";
 import useDebounce from "../../../utils/hooks/useDebounce";
 import {IProduct} from "../../../types/productTypes";
-import {searchProducts} from "../AddProduct/RelatedProducts";
+import Title from "antd/es/typography/Title";
 
 interface DataType {
     key: React.Key;
@@ -22,12 +26,19 @@ interface DataType {
 }
 const OrderList = () => {
     const [api, contextHolder] = notification.useNotification();
-    const [getOrders, {data, error, isSuccess, isError, isLoading}] = useGetOrdersMutation()
+    // const [getOrders, {data, error, isSuccess, isError, isLoading}] = useGetOrdersMutation()
     const [dataSource, setDataSource] = useState<DataType[]>([])
     const [search, setSearch] = useState('')
     const [onSearch, setOnSearch] = useState(false)
     const debounceSearch = useDebounce(search, 500)
     const [results, setResults] = useState<IProduct[]>([])
+    const [searchProduct, {data, isSuccess, isError, isLoading}] = useLazySearchProductsQuery()
+    useEffect(() => {
+        if(data && isSuccess) {
+            setOnSearch(false)
+            setResults(data)
+        }
+    }, [data, isSuccess])
     // const [page, setPage] = useState<number>(1)
     // const [pagination, setPagination] = useState<TablePaginationConfig>({pageSize: 10, current: 1})
     // const [modalOpen, setModalOpen] = useState(false);
@@ -50,7 +61,7 @@ const OrderList = () => {
             key: 'img',
             render: (_, {img}) => {
                 return (
-                    <img className='productList-img' src={`${process.env.API_URL}/productImages/${img}`}/>
+                    <img className='productList-img' src={`${import.meta.env.VITE_API_URL}/productImages/${img}`}/>
                 )
             }
         },
@@ -87,9 +98,10 @@ const OrderList = () => {
     useEffect(() => {
         if(debounceSearch) {
             setOnSearch(true)
-            const res = searchProducts(debounceSearch).then((r) => {
-                setOnSearch(false)
-                setResults(r.data)})
+            searchProduct(debounceSearch)
+            // const res = searchProducts(debounceSearch).then((r) => {
+            //     setOnSearch(false)
+            //     setResults(r.data)})
         } else {
             setResults([])
             setOnSearch(false)
@@ -119,6 +131,7 @@ const OrderList = () => {
     return (
         <div>
             {contextHolder}
+            <Title level={3}>Поиск товаров</Title>
             <Search onChange={(e) => setSearch(e.target.value)} placeholder="input search text" value={search} loading={onSearch} enterButton />
             <Table loading={isLoading} bordered={true} style={{height: '100vh', maxHeight: '100%'}} columns={columns} dataSource={dataSource} scroll={{ x: 1500, y: 300 }} />
             {/*<Modal open={modalOpen} title={'Загрузить шаблон'} footer={null} onCancel={handleCancel}>*/}

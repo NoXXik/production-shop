@@ -105,6 +105,7 @@
       //border-radius: 8px;
       .header__body {
         padding-bottom: 10px;
+        padding-top: 10px;
         display: flex;
         flex-direction: column;
 
@@ -495,8 +496,8 @@
 
   .header__close-btn {
     position: absolute;
-    top: 5px;
-    left: 5px;
+    top: 18px;
+    left: 14px;
   }
 }
 

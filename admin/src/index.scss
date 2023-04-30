@@ -85,3 +85,55 @@
   border-radius: 8px;
   padding: 0 45px;
 }
+
+// Dropdown menu
+
+.dropdown {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  z-index: 50;
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 14px;
+  box-shadow: 0px 0px 9px 4px rgba(171, 162, 162, 0.25);
+
+}
+.dropdown-2 {
+  top: 120px;
+}
+.sub-item {
+  margin-left: 8px;
+}
+.dropdown__item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.dropdown__img {
+  width: 78px;
+  height: 78px;
+  object-fit: contain;
+}
+.dropdown__button {
+  //position: absolute;
+}
+.dropdown__title {
+
+}
+.dropdown__article {
+
+}
+.dropdown__price {
+
+}
+.dropdown__stock {
+
+}
+.dropdown__stock-status {
+
+}
+.swiper-block {
+  margin-top: 24px;
+  overflow: scroll;
+}

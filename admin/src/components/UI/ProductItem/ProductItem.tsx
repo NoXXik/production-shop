@@ -29,7 +29,7 @@ export default function ProductItem(props: { product: Products }) {
             <li className="product-item product-wrapper">
                 <div className="product__image">
                     <div className="product__image-link">
-                        <img src={`${process.env.API_URL}/productImages/${images[0]}`}
+                        <img src={`${import.meta.env.VITE_API_URL}/productImages/${images[0]}`}
                              alt="" className="product__image-img"/>
                     </div>
                 </div>

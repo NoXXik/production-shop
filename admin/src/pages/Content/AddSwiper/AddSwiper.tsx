@@ -1,22 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import Title from "antd/es/typography/Title";
 import useDebounce from "../../../utils/hooks/useDebounce";
 import {IProduct} from "../../../types/productTypes";
-import {Button, Dropdown, Input, MenuProps, Modal, notification, Popconfirm, Spin} from "antd";
+import {Button, Dropdown, Input, MenuProps, Modal, notification, Popconfirm, Space, Spin} from "antd";
 import SearchCart from "../../../components/UI/SearchCart/SearchCart";
 import {DeleteFilled, PlusCircleOutlined, EyeOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 import Search from "antd/es/input/Search";
 import {A11y, Navigation, Pagination, Scrollbar} from "swiper";
-import {searchProducts} from "../../Product/AddProduct/RelatedProducts";
 import SwiperProductCart from "../../../components/UI/ProductUI/SwiperProductCart";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {
     useCreateSwiperMutation,
     useGetSwipersQuery,
     useDeleteSwiperMutation,
-    useUpdateSwiperMutation
+    useUpdateSwiperMutation, useLazySearchProductsQuery
 } from "../../../store/api/productAPI";
 import {ISwiper} from "../../../types/utilTypes";
+import {Typography} from "antd";
+const {Text, Title} = Typography;
 
 function AddSwiper() {
     const [search, setSearch] = useState('')
@@ -34,6 +34,7 @@ function AddSwiper() {
     const [deleteSwiper, {data: deleteData, isLoading: deleteIsLoading, isError: deleteIsError, error: deleteError, isSuccess: deleteIsSuccess}] = useDeleteSwiperMutation()
     const [updateSwiper, {data: updateData, isLoading: updateIsLoading, isError: updateIsError, error: updateError, isSuccess: updateIsSuccess}] = useUpdateSwiperMutation()
     const [createSwiper, {data: createData, isLoading: createIsLoading, isError: createIsError, error: createError, isSuccess: createIsSuccess}] = useCreateSwiperMutation()
+    const [searchProduct, {data: dataSearch, isSuccess: isSuccessSearch, isError: isErrorSearch}] = useLazySearchProductsQuery()
 
     // const [items, setItems] = useState([])
     const handleCancel = () => {
@@ -45,17 +46,24 @@ function AddSwiper() {
     useEffect(() => {
         if (debounceSearch) {
             setOnSearch(true)
-            const res = searchProducts(debounceSearch).then((r) => {
-                setOnSearch(false)
-                setResults(r.data)
-            })
+            searchProduct(debounceSearch)
+
+            // const res = searchProducts(debounceSearch).then((r) => {
+            //     setOnSearch(false)
+            //     setResults(r.data)
+            // })
         } else {
             setResults([])
             setOnSearch(false)
         }
 
     }, [debounceSearch])
-
+    useEffect(() => {
+        if(dataSearch && isSuccessSearch) {
+            setOnSearch(false)
+            setResults(dataSearch)
+        }
+    }, [dataSearch, isSuccessSearch])
     useEffect(() => {
     }, [results])
     const openNotification = (message: string, description: string) => {
@@ -165,31 +173,46 @@ function AddSwiper() {
             </div>
 
 
-            <Modal open={modalSaveOpen} title={'Сохранить шаблон'} footer={null} onCancel={handleCancel}>
+            <Modal open={modalSaveOpen} title={'Сохранить шаблон'} footer={null} onCancel={handleCancel} width={'80%'}>
                 <div className="content">
-                    <Input onChange={(e) => setSwiperTitle(e.target.value)} value={swiperTitle}
-                           style={{maxWidth: 300}} placeholder="Введите имя для шаблоны"/>
-                    <Search onChange={(e) => setSearch(e.target.value)} placeholder="input search text" value={search}
-                            loading={onSearch} enterButton/>
-                    <Dropdown menu={{items}} open={results.length > 0}>
-                        <a onClick={(e) => e.preventDefault()}>
-                        </a>
-                    </Dropdown>
-                    <Swiper modules={[Navigation, Pagination, Scrollbar, A11y]} pagination={{clickable: true}}
-                            slidesPerView={3} spaceBetween={15}>
-                        {relatedProducts.map(product => <SwiperSlide key={product.id}>
-                            <SwiperProductCart product={product}/>
-                            <Button
-                                onClick={() => setRelatedProducts(prev => prev.filter(product_ => product.id !== product_.id))}><DeleteFilled/></Button>
-                        </SwiperSlide>)}
-                    </Swiper>
-                    <Popconfirm
-                        title="Вы действительно хотите сохранить карусель?"
-                        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                        onConfirm={handleSaveSwiper}
-                    >
-                        <Button style={{maxWidth: 300}}>Сохранить</Button>
-                    </Popconfirm>
+                    <Space direction={"vertical"} align={"start"}>
+                        <Input onChange={(e) => setSwiperTitle(e.target.value)} value={swiperTitle}
+                               style={{minWidth: 500}} placeholder="Введите имя для шаблоны"/>
+                        <Search onChange={(e) => setSearch(e.target.value)} placeholder="input search text" value={search}
+                                loading={onSearch} style={{minWidth: 500}} enterButton/>
+                        <Popconfirm
+                            title="Вы действительно хотите сохранить карусель?"
+                            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                            onConfirm={handleSaveSwiper}
+                        >
+                            <Button style={{maxWidth: 300}}>Сохранить</Button>
+                        </Popconfirm>
+                    </Space>
+                    {(results && results.length > 0) && <div className={'dropdown dropdown-2'}>
+                        {results.map(item => <div className={'dropdown__item'}>
+                            <Button className={'dropdown__button'} onClick={() => {
+                                setSearch('')
+                                setRelatedProducts(prev => [...prev, item])
+                            }}><PlusCircleOutlined/></Button>
+                            <img className={'dropdown__img sub-item'}
+                                 src={`${import.meta.env.VITE_STATIC_URL}/productImages/${item.images[0]}`} alt=""/>
+                            <Text className={'dropdown__title sub-item'}>{item.title}</Text>
+                            <Text className={'dropdown__article sub-item'}>Артикул: {item.vendor_code}</Text>
+                            <Text className={'dropdown__price sub-item'}>Цена: {item.currently_price}</Text>
+                            <Text className={'dropdown__stock sub-item'}>Остаток: {item.stock_count}</Text>
+                            <Text className={'dropdown__stock-status sub-item'}>Наличие: {item.stock_status}</Text>
+                        </div>)}
+                    </div>}
+                    {(relatedProducts && relatedProducts.length > 0) && <div className={'swiper-block'}>
+                        <Swiper modules={[Navigation, Pagination, Scrollbar, A11y]} pagination={{clickable: true}}
+                                slidesPerView={3} spaceBetween={15}>
+                            {relatedProducts.map(product => <SwiperSlide key={product.id}>
+                                <SwiperProductCart product={product}/>
+                                <Button
+                                    onClick={() => setRelatedProducts(prev => prev.filter(product_ => product.id !== product_.id))}><DeleteFilled/></Button>
+                            </SwiperSlide>)}
+                        </Swiper>
+                    </div>}
                 </div>
             </Modal>
 

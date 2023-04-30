@@ -22,7 +22,7 @@ const RequireAuthentication = (WrappedComponent: any) => {
             const token = parse(cookie)?.auth
 
             try {
-                isAuthenticated = jwt.verify(token, 'secretkey13245');
+                isAuthenticated = jwt.verify(token, '');
             } catch (e) {
                 console.log(e);
             }

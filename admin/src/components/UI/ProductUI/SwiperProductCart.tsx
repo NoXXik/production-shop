@@ -11,7 +11,7 @@ export default function SwiperProductCart({product}: {product: IProduct}) {
           {/* <!-- Изображение-ссылка товара --> */}
           <a href="#" className="card__image">
             <img
-              src={`${process.env.API_URL}/productImages/${images[0]}`}
+              src={`${import.meta.env.VITE_API_URL}/productImages/${images[0]}`}
               alt={title}
             />
           </a>

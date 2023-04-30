@@ -248,24 +248,27 @@ const Category = () => {
     return (
         <div>
             {contextHolder}
-            <Title level={5}>Управление категориями</Title>
-            <Cascader
-                options={options}
-                expandTrigger="hover"
-                displayRender={displayRender}
-                style={{minWidth: 250}}
-                showSearch={{ filter }}
-                onChange={(val) => changeCategory(val)}
-                changeOnSelect
-            />
-            <Button onClick={() => setModalOpen(true)}>Создать категорию</Button>
-            <Button onClick={() => {
-                if(selectCategory) {
-                    setModalFilterOpen(true)
-                } else {
-                    openNotification('Невозможно добавить фильтр!', 'Выберите категорию для добавления фильтра')
-                }
-            }}>Добавить фильтр</Button>
+            <Space direction={"vertical"} align={"start"}>
+                <Title level={3}>Управление категориями</Title>
+                <Cascader
+                    options={options}
+                    expandTrigger="hover"
+                    displayRender={displayRender}
+                    style={{minWidth: 250}}
+                    showSearch={{ filter }}
+                    onChange={(val) => changeCategory(val)}
+                    changeOnSelect
+                />
+                <Button onClick={() => setModalOpen(true)}>Создать категорию</Button>
+                <Button onClick={() => {
+                    if(selectCategory) {
+                        setModalFilterOpen(true)
+                    } else {
+                        openNotification('Невозможно добавить фильтр!', 'Выберите категорию для добавления фильтра')
+                    }
+                }}>Добавить фильтр</Button>
+            </Space>
+
 
             {/*<Popconfirm*/}
             {/*    title="Удалить категорию?"*/}
@@ -279,21 +282,25 @@ const Category = () => {
             <Modal open={modalFilterOpen} title={`Добавить фильтр в ${selectCategory ? `в ${hCategories.filter(cat => cat.id === Number(selectCategory))[0]?.title}` : ''}`} footer={null} onCancel={handleCancel}>
                 <div className="content">
                     <div className="discount-input">
-                        <Select onSelect={(value) => setSelectFilter(Number(value))} value={selectFilter} style={{width: "100%"}}>
-                            {filterList && filterList.map(filter => <Option key={filter.id} value={filter.id}>{filter.title}</Option>)}
-                        </Select>
-                        <div className="">
-                            {categoryFilters && categoryFilters.map(filter => filter.title).join(' ')}
-                        </div>
-                        <Popconfirm
-                            title="Добавить фильтр в категорию?"
-                            description="Вы действительно хотите добавить фильтр в выбранную категорию?"
-                            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                            onConfirm={addFilterCategory}
-                        >
-                            <Button>Добавить фильтр</Button>
-                        </Popconfirm>
+                        <Space direction={"vertical"} align={"start"}>
+                            <Select onSelect={(value) => setSelectFilter(Number(value))} value={selectFilter} style={{width: "100%", minWidth: 400}}>
+                                {filterList && filterList.map(filter => <Option key={filter.id} value={filter.id}>{filter.title}</Option>)}
+                            </Select>
+                            <Popconfirm
+                                title="Добавить фильтр в категорию?"
+                                description="Вы действительно хотите добавить фильтр в выбранную категорию?"
+                                icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                                onConfirm={addFilterCategory}
+                            >
+                                <Button>Добавить фильтр</Button>
+                            </Popconfirm>
+                            <div className="">
+                                <Title level={3}>Список фильтров</Title>
+                                {categoryFilters && categoryFilters.map(filter => <Title level={4}>{filter.title}</Title>)}
+                            </div>
 
+
+                        </Space>
                     </div>
                 </div>
             </Modal>

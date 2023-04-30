@@ -73,7 +73,7 @@ export default function ProductPage({product}: { product: ProductPageProps | nul
   "@type": "Product",
   "description": ${product?.meta_description},
   "name": ${product?.title},
-  "image": ${product?.images[0] || ''},
+  "image": ${process.env.NEXT_PUBLIC_STATIC_URL}/productImages/${product?.images[0] || ''},
   "offers": {
     "@type": "Offer",
     "availability": "https://schema.org/${availability}",

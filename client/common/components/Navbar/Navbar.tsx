@@ -52,7 +52,7 @@ function Navbar({navbarCategories}: { navbarCategories: INavbarCategory[] | null
                                             <AppLink href={"mailto:kontrol_116@mail.ru"} >kontrol_116@mail.ru</AppLink>
                                         </li>
                                         <li className="menu__item">
-                                            <AppLink href={"/about"}>Контакты</AppLink>
+                                            <AppLink href={"/contacts"}>Контакты</AppLink>
                                         </li>
                                         <li className="menu__item">
                                             <AppLink href={"/support/order"}>Обратная связь</AppLink>
@@ -112,12 +112,13 @@ function Navbar({navbarCategories}: { navbarCategories: INavbarCategory[] | null
                                     {/*<div className="actions-header__buttons actions-header__buttons_catalog">*/}
                                     {/*    <Link className="header-link _link" href={'/catalog'}><span className="_icon-list2"></span>Каталог</Link>*/}
                                     {/*</div>*/}
-                                    <div className="actions-header__buttons actions-header__buttons_compare">
-                                        {/*<Link className="header-link _link" href={'/compare'}><span className="_icon-stats-dots"></span>Сравнить</Link>*/}
-                                        <AppLink href={'/compare'}
-                                                 icon={'_icon-menu-compare'}><></>
-                                        </AppLink>
-                                    </div>
+
+                                    {/*<div className="actions-header__buttons actions-header__buttons_compare">*/}
+                                    {/*    /!*<Link className="header-link _link" href={'/compare'}><span className="_icon-stats-dots"></span>Сравнить</Link>*!/*/}
+                                    {/*    <AppLink href={'/compare'}*/}
+                                    {/*             icon={'_icon-menu-compare'}><></>*/}
+                                    {/*    </AppLink>*/}
+                                    {/*</div>*/}
                                     <div className="actions-header__buttons actions-header__buttons_favorite">
                                         {/*<Link className="header-link _link" href={'/favorite'}><span className="_icon-favorite"></span>Избранное</Link>*/}
                                         <AppLink href={'/favorite'} icon={'_icon-menu-favorite'}><></>
@@ -158,7 +159,7 @@ function Navbar({navbarCategories}: { navbarCategories: INavbarCategory[] | null
                     <AppLink href={'/'} icon={'_icon-menu-home'} theme={AppLinkTheme.PRIMARY}><></></AppLink>
                     <AppLink href={'/catalog'} icon={'_icon-menu-catalog'} theme={AppLinkTheme.PRIMARY}><></></AppLink>
                     <AppLink href={'/cart'} icon={'_icon-menu-cart'} theme={AppLinkTheme.PRIMARY}><></></AppLink>
-                    <AppLink href={'/compare'} icon={'_icon-menu-compare'} theme={AppLinkTheme.PRIMARY}><></></AppLink>
+                    {/*<AppLink href={'/compare'} icon={'_icon-menu-compare'} theme={AppLinkTheme.PRIMARY}><></></AppLink>*/}
                     <AppLink href={'/favorite'} icon={'_icon-menu-favorite'} theme={AppLinkTheme.PRIMARY}><></></AppLink>
                 </div>
             </div>

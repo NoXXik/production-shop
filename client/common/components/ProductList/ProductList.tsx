@@ -20,8 +20,10 @@ export default function ProductList({
                                         router,
                                         count,
                                         setIsActive,
-                                        isLoading
-                                    }: { products: IProduct[] | null, router: NextRouter, count: number, setIsActive: Dispatch<SetStateAction<boolean>>, isLoading: boolean }) {
+                                        isLoading,
+                                        sortB = true,
+                                        paginationB = true,
+                                    }: { products: IProduct[] | null, router: NextRouter, count: number, setIsActive?: Dispatch<SetStateAction<boolean>>, isLoading: boolean, sortB?: boolean, paginationB?: boolean }) {
     let _limit = Number(router.query.limit || '21')
 
     const [view, setView] = useState<IViewValues>('plate')
@@ -66,7 +68,7 @@ export default function ProductList({
         <div className="product-list__body">
             <div className="product-list__container">
                 <div className="product-list__setting-panel setting-panel">
-                    <div className="setting-panel__sort-block">
+                    {sortB && <div className="setting-panel__sort-block">
                         <form action='sort' className="sort-block__body">
                             {/*<label className="sort-block__title">*/}
                             {/*    <Text title={'Сортировка'} size={TextSize.SIZE_M} />*/}
@@ -81,9 +83,9 @@ export default function ProductList({
                                     {sortList.map(item => <option key={item.value} onChange={() => handleSort(item)} value={item.value}>{item.label}</option>)}
                             </select> */}
                         </form>
-                        <Button onClick={() => setIsActive(true)} small={true} className={'sort-block__filters'}
+                        <Button onClick={() => setIsActive && setIsActive(true)} small={true} className={'sort-block__filters'}
                                 title={'Фильтры'}>Фильтры</Button>
-                    </div>
+                    </div>}
                 </div>
                 <div className="product-list__items product-items">
                     {isLoading
@@ -93,7 +95,15 @@ export default function ProductList({
                             justifyContent: 'center',
                             alignItems: 'center'
                         }}>
-                            {[0, 1, 2, 3, 4, 5].map(item => <div style={{width: 270, marginTop: 24, marginLeft: 24, border: '1px #E0E0E0 solid', borderRadius: 12, padding: 12, boxSizing: 'border-box'}}
+                            {[0, 1, 2, 3, 4, 5].map(item => <div style={{
+                                width: 270,
+                                marginTop: 24,
+                                marginLeft: 24,
+                                border: '1px #E0E0E0 solid',
+                                borderRadius: 12,
+                                padding: 12,
+                                boxSizing: 'border-box'
+                            }}
                                                                  key={item}>
                                 <Skeleton.Image style={{width: 200, height: 200}} active={true}/>
                                 <Skeleton style={{marginTop: 14}} active={true} paragraph={{rows: 3}}/>
@@ -112,43 +122,69 @@ export default function ProductList({
                         }</>
                     }
                 </div>
-                <div className="setting-panel__pagination">
+                {paginationB && <div className="setting-panel__pagination">
                     <Pagination style={{alignItems: 'center'}}
                                 onChange={(page, pageSize) => handlePagination(page, pageSize)} pageSize={limit}
                                 current={_page} total={count}/>
-                </div>
+                </div>}
             </div>
         </div>
     )
 }
 
 
-{/*<div className="setting-panel__view-block">*/}
-{/*    <label className="view-block__title">*/}
-{/*        Вид*/}
-{/*    </label>*/}
-{/*    <div className="view-block__btn-group btn-group">*/}
-{/*        <button className={`view-block__button btn-group-item ${view === 'plate' ? '_active' : ''}`}*/}
-{/*                onClick={() => handleView('plate')}><span className="_icon-grid6"></span></button>*/}
-{/*        <button className={`view-block__button btn-group-item ${view === 'list' ? '_active' : ''}`}*/}
-{/*                onClick={() => handleView('list')}><span className="_icon-list2"></span></button>*/}
-{/*    </div>*/}
-{/*</div>*/}
-{/*<div className="setting-panel__limit-block">*/}
-{/*    <label className="limit-block__title">*/}
-{/*        Вид*/}
-{/*    </label>*/}
-{/*    <div className="limit-block__btn-group btn-group">*/}
-{/*        <button*/}
-{/*            className={`limit-block__button btn-group-item _button-orange ${limit === 21 ? '_active' : ''}`}*/}
-{/*            onClick={() => handleLimit(21)}>21*/}
-{/*        </button>*/}
-{/*        <button*/}
-{/*            className={`limit-block__button btn-group-item _button-orange${limit === 42 ? '_active' : ''}`}*/}
-{/*            onClick={() => handleLimit(42)}>42*/}
-{/*        </button>*/}
-{/*    </div>*/}
-{/*</div>*/}
+{/*<div className="setting-panel__view-block">*/
+}
+{/*    <label className="view-block__title">*/
+}
+{/*        Вид*/
+}
+{/*    </label>*/
+}
+{/*    <div className="view-block__btn-group btn-group">*/
+}
+{/*        <button className={`view-block__button btn-group-item ${view === 'plate' ? '_active' : ''}`}*/
+}
+{/*                onClick={() => handleView('plate')}><span className="_icon-grid6"></span></button>*/
+}
+{/*        <button className={`view-block__button btn-group-item ${view === 'list' ? '_active' : ''}`}*/
+}
+{/*                onClick={() => handleView('list')}><span className="_icon-list2"></span></button>*/
+}
+{/*    </div>*/
+}
+{/*</div>*/
+}
+{/*<div className="setting-panel__limit-block">*/
+}
+{/*    <label className="limit-block__title">*/
+}
+{/*        Вид*/
+}
+{/*    </label>*/
+}
+{/*    <div className="limit-block__btn-group btn-group">*/
+}
+{/*        <button*/
+}
+{/*            className={`limit-block__button btn-group-item _button-orange ${limit === 21 ? '_active' : ''}`}*/
+}
+{/*            onClick={() => handleLimit(21)}>21*/
+}
+{/*        </button>*/
+}
+{/*        <button*/
+}
+{/*            className={`limit-block__button btn-group-item _button-orange${limit === 42 ? '_active' : ''}`}*/
+}
+{/*            onClick={() => handleLimit(42)}>42*/
+}
+{/*        </button>*/
+}
+{/*    </div>*/
+}
+{/*</div>*/
+}
 
 // const handleView = (view: IViewValues) => {
 //     setView(view)

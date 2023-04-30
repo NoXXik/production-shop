@@ -259,7 +259,7 @@ const getItemListElement = (products: IProduct[]): ListItemElement[] => {
         array.push({
             "@type": 'Product',
             url: product.title_translit,
-            image: product.images[0] || '',
+            image: `${process.env.NEXT_PUBLIC_STATIC_URL}/productImages/${product.images[0] || ''}`,
             name: product.title || '',
             description: product.description || '',
             offers: {

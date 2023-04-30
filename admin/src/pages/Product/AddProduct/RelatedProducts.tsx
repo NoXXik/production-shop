@@ -16,6 +16,9 @@ import produce from 'immer';
 import { IProduct } from '../../../types/productTypes';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
 import SearchCart from '../../../components/UI/SearchCart/SearchCart';
+import {useLazySearchProductsQuery} from "../../../store/api/productAPI";
+import {Typography} from "antd";
+const {Text, Title} = Typography
 
 interface IRelatedProductProps {
     relatedProducts: IProduct[];
@@ -28,14 +31,16 @@ export default function RelatedProducts(props: IRelatedProductProps) {
     const debounceSearch = useDebounce(search, 500)
     const [results, setResults] = useState<IProduct[]>([])
     const {relatedProducts, setRelatedProducts} = props
-    // const [items, setItems] = useState([])
+    const [searchProduct, {data, isSuccess, isError}] = useLazySearchProductsQuery()
+    const [items, setItems] = useState<MenuProps['items']>([])
 
     useEffect(() => {
         if(debounceSearch) {
             setOnSearch(true)
-            const res = searchProducts(debounceSearch).then((r) => {
-                setOnSearch(false)
-                setResults(r.data)})
+            searchProduct(debounceSearch)
+            // const res = searchProducts(debounceSearch).then((r) => {
+            //     setOnSearch(false)
+            //     setResults(r.data)})
         } else {
             setResults([])
             setOnSearch(false)
@@ -43,34 +48,68 @@ export default function RelatedProducts(props: IRelatedProductProps) {
 
     },[debounceSearch])
 
+    useEffect(() => {
+        if(data && isSuccess) {
+            setOnSearch(false)
+            setResults(data)
+        }
+    }, [data, isSuccess])
     // useEffect(() => {console.log(results)}, [results])
 
-    const items: MenuProps['items'] = results.map((product, id) => ({key: id, label: <><SearchCart props={product}/><Button onClick={() => {
-        setSearch('')
-        setRelatedProducts(prev => [...prev, product])
-    }}><PlusCircleOutlined/></Button></>}))
+    useEffect(() => {
+        if(results) {
+            setItems(results.map((product, id) => ({key: id, label: <><SearchCart props={product}/><Button onClick={() => {
+                    setSearch('')
+                    setRelatedProducts(prev => [...prev, product])
+                }}><PlusCircleOutlined/></Button></>})))
+        }
+    }, [results])
+    // const items: MenuProps['items'] = results.map((product, id) => ({key: id, label: <><SearchCart props={product}/><Button onClick={() => {
+    //     setSearch('')
+    //     setRelatedProducts(prev => [...prev, product])
+    // }}><PlusCircleOutlined/></Button></>}))
 
   return (
     <div>
         <div className="search-block">
             <Search onChange={(e) => setSearch(e.target.value)} placeholder="input search text" value={search} loading={onSearch} enterButton />
-            <Dropdown menu={{items}} open={results.length > 0}>
-                <a onClick={(e) => e.preventDefault()}>
-                </a>
-            </Dropdown>
+            {(results && results.length > 0) && <div className={'dropdown'}>
+                {results.map(item => <div className={'dropdown__item'}>
+                    <Button className={'dropdown__button'} onClick={() => {
+                        setSearch('')
+                        setRelatedProducts(prev => [...prev, item])
+                    }}><PlusCircleOutlined/></Button>
+                    <img className={'dropdown__img sub-item'}
+                         src={`${import.meta.env.VITE_STATIC_URL}/productImages/${item.images[0]}`} alt=""/>
+                    <Text className={'dropdown__title sub-item'}>{item.title}</Text>
+                    <Text className={'dropdown__article sub-item'}>Артикул: {item.vendor_code}</Text>
+                    <Text className={'dropdown__price sub-item'}>Цена: {item.currently_price}</Text>
+                    <Text className={'dropdown__stock sub-item'}>Остаток: {item.stock_count}</Text>
+                    <Text className={'dropdown__stock-status sub-item'}>Наличие: {item.stock_status}</Text>
+                </div>)}
+            </div>}
+            {/*<Dropdown menu={{items}} open={results.length > 0}>*/}
+            {/*    <a onClick={(e) => e.preventDefault()}>*/}
+            {/*    </a>*/}
+            {/*</Dropdown>*/}
         </div>
+        {(relatedProducts && relatedProducts.length > 0) && <div className={'swiper-block'}>
+            <Swiper modules={[Navigation, Pagination, Scrollbar, A11y]} pagination={{clickable: true}}
+                    slidesPerView={3} spaceBetween={15}>
+                {relatedProducts.map(product => <SwiperSlide key={product.id}>
+                    <SwiperProductCart product={product}/>
+                    <Button
+                        onClick={() => setRelatedProducts(prev => prev.filter(product_ => product.id !== product_.id))}><DeleteFilled/></Button>
+                </SwiperSlide>)}
+            </Swiper>
+        </div>}
 
-        <Swiper modules={[Navigation, Pagination, Scrollbar, A11y]} pagination={{clickable: true}}
-        slidesPerView={3} spaceBetween={15}>
-            {relatedProducts.map(product => <SwiperSlide key={product.id}>
-                <SwiperProductCart product={product}/>
-                <Button onClick={() => setRelatedProducts(prev => prev.filter(product_ => product.id !== product_.id))}><DeleteFilled/></Button>
-            </SwiperSlide>)}
-        </Swiper>
     </div>
   )
 }
 
-export async function searchProducts(value: string) {
-    return await axios.get<IProduct[]>(`${process.env.API_URL}/api/product/search?request=${value}`)
-}
+// export async function searchProducts(value: string) {
+//     console.log('search prods')
+//     return await axios.get<IProduct[]>(`${process.env.API_URL}/express/product/search?request=${value}`)
+// }
+// 4c8ad29f-ebcb-4878-a49c-c27d2d590658.jpeg

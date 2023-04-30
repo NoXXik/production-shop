@@ -3,7 +3,7 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import {
     CreateTemplate,
     ICategory,
-    IFilter,
+    IFilter, IProduct,
     IProductCreateData,
     ProductPageProps, ProductTemplate,
     UpdateProductDataProps
@@ -119,50 +119,50 @@ export const productAPI = createApi({
         }),
         getOrderById: build.query<Order, string>({
             query: (id) => ({
-                url: `order/get-by-id/${id}`,
+                url: `/order/get-by-id/${id}`,
                 method: 'GET',
             })
         }),
         getProductByTranslit: build.query<ProductPageProps, string>({
             query: (translit) => ({
-                url: `product/get_by_translit/${translit}`,
+                url: `/product/get_by_translit/${translit}`,
                 method: 'GET',
             })
         }),
         updateProduct: build.mutation<any, UpdateProductDataProps>({
             query: (data) => ({
-                url: 'product/update-product',
+                url: '/product/update-product',
                 method: 'POST',
                 body: data
             })
         }),
         createTemplate: build.mutation<any, CreateTemplate>({
             query: (data) => ({
-                url: 'template/create',
+                url: '/template/create',
                 method: 'POST',
                 body: data,
             })
         }),
         getTemplates: build.query<ProductTemplate[], any>({
             query: () => ({
-                url: 'template/get-templates'
+                url: '/template/get-templates'
             })
         }),
         deleteTemplate: build.query<any, number>({
             query: (id) => ({
-                url: `template/delete/${id}`,
+                url: `/template/delete/${id}`,
                 method: 'DELETE'
             })
         }),
         deleteProduct: build.query<any, string>({
             query: (id) => ({
-                url: `product/delete/${id}`,
+                url: `/product/delete/${id}`,
                 method: 'DELETE'
             })
         }),
         createSwiper: build.mutation<any, {title: string, products: string[]}>({
             query: (data) => ({
-                url: 'utils/create-swiper',
+                url: '/utils/create-swiper',
                 method: 'POST',
                 body: data
             }),
@@ -170,21 +170,21 @@ export const productAPI = createApi({
         }),
         getSwipers: build.query<ISwiper[], any>({
             query: () => ({
-                url: 'utils/get-all-swipers',
+                url: '/utils/get-all-swipers',
                 method: 'GET'
             }),
             providesTags: ['Swipers']
         }),
         deleteSwiper: build.mutation<any, number>({
             query: (id) => ({
-                url: `utils/delete-swiper/${id}`,
+                url: `/utils/delete-swiper/${id}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['Swipers']
         }),
         updateSwiper: build.mutation<any, {title: string, products: string[], id: number}>({
             query: (data) => ({
-                url: 'utils/update-swiper',
+                url: '/utils/update-swiper',
                 method: 'PATCH',
                 body: data
             }),
@@ -192,14 +192,14 @@ export const productAPI = createApi({
         }),
         loginAdmin: build.mutation<AuthResponse, {login: string, password: string}>({
             query: (data) => ({
-                url: 'admin/login',
+                url: '/admin/login',
                 method: 'POST',
                 body: data
             })
         }),
         createAdmin: build.mutation<any, CreateAdminData>({
             query: (data) => ({
-                url: 'admin/create',
+                url: '/admin/create',
                 method: 'POST',
                 body: data
             }),
@@ -207,14 +207,14 @@ export const productAPI = createApi({
         }),
         getAllAdmins: build.query<AdminData[], any>({
             query: () => ({
-                url: 'admin/get-all',
+                url: '/admin/get-all',
                 method: 'GET'
             }),
             providesTags: ['Admin']
         }),
         deleteAdminById: build.mutation<any, string>({
             query: (id) => ({
-                url: `admin/delete/${id}`,
+                url: `/admin/delete/${id}`,
                 method: 'DELETE'
             }),
             invalidatesTags: ['Admin']
@@ -232,6 +232,18 @@ export const productAPI = createApi({
                 url: '/support/get-orders',
             }),
             providesTags: ['SupportOrders']
+        }),
+        checkAuth: build.query({
+            query: () => ({
+                url: '/admin/check-auth',
+                method: 'GET'
+            })
+        }),
+        searchProducts: build.query<IProduct[], string>({
+            query: (request) => ({
+                url: '/product/search',
+                params: {request: request}
+            })
         })
     }),
 })
@@ -267,4 +279,6 @@ export const {
     useCreateAdminMutation,
     useChangeStatusSupportOrderMutation,
     useLazyGetAllSupportOrdersQuery,
+    useLazyCheckAuthQuery,
+    useLazySearchProductsQuery,
 } = productAPI

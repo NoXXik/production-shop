@@ -67,7 +67,13 @@ export const categoryAPI = createApi({
                 body: data,
             })
         }),
-
+        orderFail: builder.mutation<any, {OutSum: string, InvId:string}>({
+            query: (data) => ({
+                url: '/payment/failure',
+                method: 'POST',
+                body: data,
+            })
+        }),
     })
 })
 
@@ -81,4 +87,5 @@ export const {
     useLazyGetProductSlidersQuery,
     useSubmitOrderMutation,
     useCreateSupportOrderMutation,
+    useOrderFailMutation,
 } = categoryAPI

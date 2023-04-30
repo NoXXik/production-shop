@@ -53,7 +53,7 @@ class UserController {
             if(!await UserService.checkPassword(password, db_user.hash_password)) {
                 return res.status(400).json({status: 'error', message: 'User password is not valid'})
             }
-            const token = await jwt.sign({db_user}, 'secretkey13245', {expiresIn: '1h'})
+            const token = await jwt.sign({db_user}, process.env.SECRET_KEY, {expiresIn: '1h'})
             try {
                 res.cookie('accessToken', token, {httpOnly: true})
                 return res.status(200).json({db_user, token})

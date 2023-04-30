@@ -4,6 +4,7 @@ import AddToCart from "../../AddToCart/AddToCart";
 import {Button, ButtonTheme} from "../../../shared/ui/Button/Button";
 import {AppLink, AppLinkTheme} from "../../../shared/ui/Link/Link";
 import {isDiscountValid, priceWithDiscount} from "../../../utils/isDiscountValid";
+import AddToList from "../../AddToList/AddToList";
 
 
 export default function ProductItem(props: { product: IProduct }) {
@@ -42,11 +43,11 @@ export default function ProductItem(props: { product: IProduct }) {
                     </div>}
                     <div className="product__image-buttons">
                         <div className="product__image-button favorite-button">
-                            <Button theme={ButtonTheme.CLEAR} icon={'_icon-favorite'}></Button>
+                            <AddToList id={id} list={'favorite'}></AddToList>
                         </div>
-                        <div className="product__image-button compare-button">
-                            <Button theme={ButtonTheme.CLEAR} icon={'_icon-compare'}></Button>
-                        </div>
+                        {/*<div className="product__image-button compare-button">*/}
+                        {/*    <Button theme={ButtonTheme.CLEAR} icon={'_icon-compare'}></Button>*/}
+                        {/*</div>*/}
                     </div>
                 </div>
                 {stock_status === 'В наличии' && <>{(discount && isDiscountValid(discount.startDate, discount.expirationDate)) ?

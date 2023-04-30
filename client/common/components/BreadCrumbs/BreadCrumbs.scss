@@ -24,7 +24,7 @@
     text-align: left;
     text-overflow: ellipsis;
     max-height: 20px;
-    min-height: 18px;
+    min-height: 22px;
   }
 
   .breadcrumbs__item::before {
@@ -38,9 +38,10 @@
 }
 
 .breadcrumbs-arrow {
-  align-self: center;
+  //align-self: center;
   margin-left: 12px;
   margin-right: 12px;
+  margin-top: 6px;
 }
 
 .breadcrumbs-arrow::before {

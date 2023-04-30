@@ -11,20 +11,20 @@ import {AppLink} from "../../shared/ui/Link/Link";
 const pages = [
     {page: 'index', title: 'Главная', url: '/', level: 0, childrens: ['about', 'catalog-v2']},
 
-    {page: 'about', title: 'Контакты', url: '/about', level: 1, childrens: null},
+    {page: 'contacts', title: 'Контакты', url: '/contacts', level: 1, childrens: null},
 
     {page: 'catalog', title: 'Каталог', url: '/catalog', level: 1, childrens: ['[category]']},
     {page: '[category]', title: '[category]', url: '/catalog/[category]', level: 2, childrens: ['[title]']},
     {page: '[title]', title: '[title]', url: '/catalog/[category]/[title]', level: 3, childrens: null},
 
-    {page: 'order', title: 'Вопросы в тех.поддержку', url: '/support/order', level: 1, childrens: null},
+    {page: 'support', title: 'Техническая поддержка', url: '/support', level: 1, childrens: ['order']},
+    {page: 'order', title: 'Вопросы в тех.поддержку', url: '/support/order', level: 2, childrens: null},
 
     {page: 'cart', title: 'Корзина', url: '/cart', level: 1, childrens: null},
     {page: 'compare', title: 'Сравнить', url: '/compare', level: 1, childrens: null},
     {page: 'favorite', title: 'Избранное', url: '/favorite', level: 1, childrens: null},
 
     {page: 'order', title: 'Заказ', url: '/order', level: 1, childrens: ['success', 'failure']},
-
     {page: 'success', title: 'Успешная оплата', url: '/order/success', level: 2, childrens: null},
     {page: 'failure', title: 'Отмена оплаты', url: '/order/failure', level: 2, childrens: null},
 

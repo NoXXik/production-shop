@@ -46,6 +46,7 @@ import MetaInfo from './MetaInfo';
 import RelatedProducts from './RelatedProducts';
 import ProductDiscount from './ProductDiscount';
 import {createProduct} from '../../../utils/api/createProduct';
+import Title from "antd/es/typography/Title";
 
 
 export default function CreateProduct() {
@@ -311,6 +312,8 @@ export default function CreateProduct() {
 
     return (
         <Space direction='vertical' size="large" style={{display: 'flex'}}>
+            <Title level={3}>Добавление нового товара</Title>
+
             {contextHolder}
             <Tabs defaultActiveKey='1' items={tabItems}></Tabs>
             <div className='loader-container'>
