@@ -89,8 +89,11 @@ export default function Compare() {
     }
 
     function onChoose(data: DeliveryInfoOnChoose) {
-        const deliveryInfo = validateDeliveryInfo(data)
-        setDeliveryInfo(deliveryInfo)
+        const DeliveryInfo = validateDeliveryInfo(data)
+        if(deliveryInfo){
+            setTotalOrderSum(prev => prev - Number(deliveryInfo.price))
+        }
+        setDeliveryInfo(DeliveryInfo)
     }
     const handleRecaptcha = (value: any) => {
         setReCaptcha(true)

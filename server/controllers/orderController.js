@@ -15,7 +15,7 @@ class OrderController {
                 offset: offset,
                 limit: limit,
             })
-            orders.count = orders.count/2;
+            // orders.count = orders.count/2;
             return res.json(orders)
         } catch (e) {
             return res.status(500).json({message: e.message})
