@@ -167,7 +167,7 @@ export default function Category2({props}: { props: IProductResponse | null }) {
                             `{
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "url": '${router.asPath}',
+    "url": '${process.env.NEXT_PUBLIC_SITE_URL}${router.asPath}',
     "numberOfItems": "${props.products.length}",
     "itemListElement": ${JSON.stringify(listElements)}
                         }`
