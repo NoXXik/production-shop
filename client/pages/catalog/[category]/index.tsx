@@ -13,6 +13,7 @@ import ProductList from "../../../common/components/ProductList/ProductList";
 import SideBar from "../../../common/components/CategorySideBar/SideBar";
 import {NextPageContext} from "next";
 import Head from "next/head";
+import {priceWithDiscount} from "../../../common/utils/isDiscountValid";
 
 
 
@@ -252,7 +253,7 @@ const getItemListElement = (products: IProduct[]): ListItemElement[] => {
         }
 
         if (product.discount && Date.parse(product.discount.expirationDate) > Date.now()) {
-            price = product.currently_price - (100 - product.discount.discount) / 100;
+            price = Number(priceWithDiscount(product.currently_price, product.discount.discount))
         } else {
             price = product.currently_price
         }
