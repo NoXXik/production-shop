@@ -42,7 +42,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - /root/static:/server/static
+      - /root/static:/app/static
   admin-react:
     container_name: admin-react
     restart: always
