@@ -13,7 +13,7 @@ import ProductList from "../../../common/components/ProductList/ProductList";
 import SideBar from "../../../common/components/CategorySideBar/SideBar";
 import {NextPageContext} from "next";
 import Head from "next/head";
-import {priceWithDiscount} from "../../../common/utils/isDiscountValid";
+import {isDiscountValid, priceWithDiscount} from "../../../common/utils/isDiscountValid";
 
 
 
@@ -252,7 +252,7 @@ const getItemListElement = (products: IProduct[]): ListItemElement[] => {
             availability = 'PreOrder'
         }
 
-        if (product.discount && Date.parse(product.discount.expirationDate) > Date.now()) {
+        if (product.discount && isDiscountValid(product.discount.startDate, product.discount.expirationDate)) {
             price = Number(priceWithDiscount(product.currently_price, product.discount.discount))
         } else {
             price = product.currently_price
