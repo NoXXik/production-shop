@@ -42,9 +42,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - /root/static/productImages:./static/productImages
-      - /root/static/categoryImages:./static/categoryImages
-      - /root/static/productFiles:./static/productFiles
+      - /root/static:/server/static
   admin-react:
     container_name: admin-react
     restart: always
@@ -59,9 +57,6 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
       - "5050:80"
-#    volumes:
-#      - /root/pgadmin/pgadmin-data:/var/lib/pgadmin
-#      - /root/pgadmin/pgadmin-config:/root/.pgadmin
   php:
     image: php:8.1-fpm
     volumes:
