@@ -3,3 +3,8 @@
 ./server/node_modules
 /admin/node_modules
 server/node_modules
+server/.env
+server/config/config.json
+./server/.env
+./server/config/config.json
+

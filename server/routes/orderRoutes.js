@@ -4,7 +4,8 @@ const adminAuth = require('../middlewares/adminAuth');
 const router = new Router();
 
 router.post('/get-all', adminAuth, getOrders)
-router.get('/get-by-id/:id', adminAuth, getOrderById)
+// router.get('/get-by-id/:id', adminAuth, getOrderById)
+router.get('/get-by-id/:id', getOrderById)
 router.post('/get-by_invid', getOrderByInvId)
 router.post('/get-by_email', getOrdersByEmail)
 router.post('/set-delivery-status', adminAuth, setDeliveryStatus)
