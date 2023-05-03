@@ -1,9 +1,10 @@
 {
-"development": {
-"username": "postgres",
-"password": "1234",
-"database": "test_shop_db",
-"host": "localhost",
-"dialect": "postgres"
+  "development": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "production",
+    "host": "pg_db",
+    "dialect": "postgres"
+  }
 }
-}
+
