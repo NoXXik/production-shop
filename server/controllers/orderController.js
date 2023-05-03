@@ -24,18 +24,22 @@ class OrderController {
     async getOrderById(req, res, next) {
         try {
             const {id} = req.params;
-            const order = await UserOrder.findOne({where: {id}, include: [User]})
-            const products_ref = await UserOrderRefProduct.findAll({where: {order_id: order.id}})
-            const products = await Product.findAll({where: {id: products_ref.map(item => item.product_id)}})
-            let output_products = []
-            products.forEach((product, id) => {
-                products_ref.forEach(UserOrderRefProduct => {
-                    if(product.id === UserOrderRefProduct.product_id){
-                        output_products.push({...product.toJSON(), UserOrderRefProduct: UserOrderRefProduct.toJSON()})
-                    }
-                })
-            })
-            return res.json({...order.toJSON(), Products: output_products})
+            const order = await UserOrder.findOne({where: {id}, include: [User, Product]})
+            if(!order) {
+                res.status(404).json({message: 'Order not found'})
+            }
+            // const products_ref = await UserOrderRefProduct.findAll({where: {order_id: order.id}})
+            // const products = await Product.findAll({where: {id: products_ref.map(item => item.product_id)}})
+            // let output_products = []
+            // products.forEach((product, id) => {
+            //     products_ref.forEach(UserOrderRefProduct => {
+            //         if(product.id === UserOrderRefProduct.product_id){
+            //             output_products.push({...product.toJSON(), UserOrderRefProduct: UserOrderRefProduct.toJSON()})
+            //         }
+            //     })
+            // })
+            // return res.json({...order.toJSON(), Products: output_products})
+            return res.json(order)
         } catch (e) {
             return res.status(500).json({message: e.message})
         }
