@@ -26,9 +26,9 @@ services:
 #      POSTGRES_DB: ${DB_NAME}
 #      POSTGRES_USER: ${DB_USER}
 #      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_USER: {{DB_USER}}
-      POSTGRES_PASSWORD: {{DB_PSWD}}
-      POSTGRES_DB: {{DB_NAME}} #production
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PSWD}
+      POSTGRES_DB: ${DB_NAME} #production
     ports:
       - "5432:5432"
     volumes:
@@ -53,8 +53,8 @@ services:
     container_name: pgadmin
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: {{PG_ADMIN_LOGIN}}
-      PGADMIN_DEFAULT_PASSWORD: {{PG_ADMIN_PSWD}}
+      PGADMIN_DEFAULT_EMAIL: ${PG_ADMIN_LOGIN}
+      PGADMIN_DEFAULT_PASSWORD: ${PG_ADMIN_PSWD}
     ports:
       - "5050:80"
   php:
